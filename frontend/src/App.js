@@ -2,7 +2,7 @@
 import Header from './components/layouts/Header';
 import Footer from './components/layouts/Footer';
 import HomeScreen from './components/screens/HomeScreen';
-import ProductScreen from './components/screens/ProductScreen';
+import ProductScreen from './components/screens/ProductDetailsScreen';
 
 /* React Bootstrap */
 import { Container } from 'react-bootstrap';
