@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 /* Controllers */
-const { getProducts, getProduct } = require('../controllers/product');
+import { getProducts, getProduct } from '../controllers/product.js';
 
 /***
  * @router  GET: api/products
@@ -16,4 +16,4 @@ router.get('/', getProducts);
  * ***/
 router.get('/:id', getProduct);
 
-module.exports = router;
+export default router;

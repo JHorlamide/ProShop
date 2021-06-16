@@ -12,11 +12,10 @@ import Products from '../product/Product';
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
-  const { products, loading } = useSelector((state) => state.product);
+  const { products, loading } = useSelector((state) => state.productList);
 
   useEffect(() => {
-    const cancelToken = axios.CancelToken;
-    const source = cancelToken.source();
+    const source = axios.CancelToken.source();
 
     dispatch(getProducts(source));
 
@@ -24,7 +23,7 @@ const HomeScreen = () => {
       return source.cancel('Request canceled');
     };
   }, [dispatch]);
-  
+
   console.log(loading);
 
   return (

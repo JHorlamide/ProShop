@@ -1,7 +1,7 @@
 import { GET_PRODUCTS, GET_PRODUCT } from '../constant/types';
 
 const initialState = {
-  product: null,
+  product: {},
   products: [],
   loading: true,
   error: {},

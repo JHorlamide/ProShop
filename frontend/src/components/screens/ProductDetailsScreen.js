@@ -1,38 +1,35 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProduct } from '../../actions/product';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
+import products from '../../products';
 
 /* Custom Component */
 import Rating from '../../components/product/ProductRating';
 
 const ProductScreen = ({ match }) => {
-  const [product, setProduct] = useState({});
-
   const dispatch = useDispatch();
 
-  // const { product, loading } = useSelector((state) => state.product);
+  const { products, loading } = useSelector((state) => state.productList);
 
   useEffect(() => {
-    // const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source();
 
-    // dispatch(getProduct(match.params.id, source));
+    dispatch(getProduct(match.params.id, source));
 
-    // return () => {
-    //   return source.cancel('Request canceled');
-    // };
-
-    const fetchProduct = async () => {
-      const { data } = await axios.get(`/api/products/${match.params.id}`);
-      setProduct(data);
+    return () => {
+      return source.cancel('Request canceled');
     };
+  }, [dispatch, match.params.id]);
 
-    fetchProduct();
-  }, []);
+  console.log(products);
+  console.log(loading);
 
-  console.log(product);
+  const product = products.find((product) => {
+    return product._id === match.params.id;
+  });
 
   return (
     <Fragment>

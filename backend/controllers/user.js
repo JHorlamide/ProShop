@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
-const asyncMiddleware = require('../middlewares/async');
+import bcrypt from 'bcrypt';
+import asyncMiddleware from '../middlewares/async.js';
 
-exports.getUser = asyncMiddleware(async (req, res) => {
+export const getUser = asyncMiddleware(async (req, res) => {
   res.send('User sent');
 });

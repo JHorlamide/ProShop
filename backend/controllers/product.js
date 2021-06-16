@@ -1,13 +1,15 @@
-const asyncMiddleware = require('../middlewares/async');
-const Products = require('../models/data');
+import asyncMiddleware from '../middlewares/async.js';
+import { Product } from '../models/Product.js';
 
 /***
  * @router  GET: api/products
  * @desc    Get all products
  * @access  Public
  * ***/
-exports.getProducts = asyncMiddleware(async (req, res) => {
-  res.json(Products);
+export const getProducts = asyncMiddleware(async (req, res) => {
+  const products = await Product.find();
+  console.log(products);
+  res.json(products);
 });
 
 /***
@@ -15,10 +17,11 @@ exports.getProducts = asyncMiddleware(async (req, res) => {
  * @desc    Get single product by Id
  * @access  Public
  * ***/
-exports.getProduct = asyncMiddleware(async (req, res) => {
-  const product = Products.find((product) => {
-    return (product._id = req.params.id);
-  });
-
+export const getProduct = asyncMiddleware(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  if (!product) {
+    res.status(404);
+    throw new Error('Product not found');
+  }
   res.json(product);
 });

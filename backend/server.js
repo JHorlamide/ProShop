@@ -1,22 +1,25 @@
-const express = require('express');
-const debug = require('debug');
-const dotenv = require('dotenv');
+import express from 'express';
+import dotenv from 'dotenv';
+import colors from 'colors';
+
+/* Custom modules */
+import route from './src/route.js';
+import connectDB from './src/db_config.js';
+
 const app = express();
 
 dotenv.config();
 
-const startServer = debug('server:started...');
-
 const PORT = process.env.PORT || 5000;
 
-/* Custom modules */
-const route = require('./src/route');
-
 /* Database Connection */
+connectDB();
 
 /* Initialize routes */
 route(app);
 
 app.listen(PORT, () => {
-  startServer(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}...`.cyan.bold
+  );
 });
