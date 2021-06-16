@@ -1,5 +1,7 @@
-import React, { Fragment } from 'react';
-import products from '../../products';
+import React, { Fragment, useEffect } from 'react';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProducts } from '../../actions/product';
 
 /* React Bootstrap Component */
 import { Row, Col } from 'react-bootstrap';
@@ -8,6 +10,23 @@ import { Row, Col } from 'react-bootstrap';
 import Products from '../product/Product';
 
 const HomeScreen = () => {
+  const dispatch = useDispatch();
+
+  const { products, loading } = useSelector((state) => state.product);
+
+  useEffect(() => {
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+
+    dispatch(getProducts(source));
+
+    return () => {
+      return source.cancel('Request canceled');
+    };
+  }, [dispatch]);
+  
+  console.log(loading);
+
   return (
     <Fragment>
       <h1>Latest Products</h1>

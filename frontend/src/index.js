@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import reducers from './reducers';
+import rootReducers from './reducers';
 
 /* Redux Initialization */
 const initialState = {};
@@ -18,8 +18,8 @@ const middleware = [thunk];
 
 /* Create store */
 const store = createStore(
+  rootReducers,
   initialState,
-  reducers,
   composeWithDevTools(applyMiddleware(...middleware))
 );
 

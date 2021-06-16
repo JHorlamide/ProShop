@@ -1,10 +1,13 @@
 const express = require('express');
 const debug = require('debug');
+const dotenv = require('dotenv');
 const app = express();
 
-const startServer = debug('server:started...')
+dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const startServer = debug('server:started...');
+
+const PORT = process.env.PORT || 5000;
 
 /* Custom modules */
 const route = require('./src/route');
@@ -15,6 +18,5 @@ const route = require('./src/route');
 route(app);
 
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-  startServer(`Server started on port ${PORT}`);
+  startServer(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });

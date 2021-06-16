@@ -19,3 +19,21 @@ export const getProducts = (source) => {
     return error;
   }
 };
+
+/***
+ * @router  GET: api/products/:id
+ * @desc    Get single product
+ * @access  Public
+ * ***/
+export const getProduct = (productId, source) => {
+  try {
+    return axios.get(`/api/products/${productId}`, {
+      cancelToken: source.token,
+    });
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log(`Error ${error.message}`);
+    }
+    return error;
+  }
+};
