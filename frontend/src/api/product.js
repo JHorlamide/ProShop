@@ -14,7 +14,7 @@ export const getProducts = (source) => {
     });
   } catch (error) {
     if (axios.isCancel(error)) {
-      console.log(`Error ${error.message}`);
+      console.log(`Error from api ${error.message}`);
     }
     return error;
   }
@@ -27,12 +27,12 @@ export const getProducts = (source) => {
  * ***/
 export const getProduct = (productId, source) => {
   try {
-    return axios.get(`/api/products/${productId}`, {
+    return axios.get(`${url}/${productId}`, {
       cancelToken: source.token,
     });
   } catch (error) {
     if (axios.isCancel(error)) {
-      console.log(`Error ${error.message}`);
+      console.log(`Error from api${error.message}`);
     }
     return error;
   }

@@ -8,12 +8,11 @@ import { Product } from '../models/Product.js';
  * ***/
 export const getProducts = asyncMiddleware(async (req, res) => {
   const products = await Product.find();
-  console.log(products);
   res.json(products);
 });
 
 /***
- * @router  GET: api/product/:id
+ * @router  GET: api/products/:id
  * @desc    Get single product by Id
  * @access  Public
  * ***/

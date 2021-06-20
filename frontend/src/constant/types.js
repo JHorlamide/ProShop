@@ -15,4 +15,8 @@ export const LOGOUT = 'LOGOUT';
 /* PRODUCTS */
 export const GET_PRODUCTS = 'GET_PRODUCTS';
 export const GET_PRODUCT = 'GET_PRODUCT';
-export const PRODUCT_ERROR = 'PRODUCT_ERROR';
+export const PRODUCT_FAIL = 'PRODUCT_FAIL';
+
+/* CART */
+export const CART_ADD_ITEM = 'CART_ADD_ITEM';
+export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';

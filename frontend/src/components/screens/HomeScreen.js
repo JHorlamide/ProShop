@@ -3,16 +3,18 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts } from '../../actions/product';
 
-/* React Bootstrap Component */
-import { Row, Col } from 'react-bootstrap';
-
 /* Custom Component */
 import Products from '../product/Product';
+import Loader from '../../components/layouts/Loader';
+/* React Bootstrap Component */
+import { Row, Col } from 'react-bootstrap';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
-  const { products, loading } = useSelector((state) => state.productList);
+  const { products, loading, error } = useSelector(
+    (state) => state.productList
+  );
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -24,20 +26,26 @@ const HomeScreen = () => {
     };
   }, [dispatch]);
 
-  console.log(loading);
+  console.log('Products HomeScreen:', products);
+  console.log('Loading HomeScreen:', loading);
+  console.log('Error HomeScreen:', error);
 
   return (
     <Fragment>
       <h1>Latest Products</h1>
-      <Row>
-        {products.map((product) => {
-          return (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Products product={product} />
-            </Col>
-          );
-        })}
-      </Row>
+      {loading && error ? (
+        <Loader />
+      ) : (
+        <Row>
+          {products.map((product) => {
+            return (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Products product={product} />
+              </Col>
+            );
+          })}
+        </Row>
+      )}
     </Fragment>
   );
 };

@@ -1,4 +1,4 @@
-import { GET_PRODUCTS, GET_PRODUCT } from '../constant/types';
+import { GET_PRODUCTS, GET_PRODUCT, PRODUCT_FAIL } from '../constant/types';
 
 const initialState = {
   product: {},
@@ -17,12 +17,18 @@ const productReducer = (state = initialState, action) => {
         products: payload,
         loading: false,
       };
-    
+
     case GET_PRODUCT:
       return {
         ...state,
         product: payload,
         loading: false,
+      };
+    case PRODUCT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
       };
     default:
       return state;
