@@ -34,4 +34,8 @@ const userSchema = new mongoose.Schema(
 /* Define model */
 export const User = mongoose.model('User', userSchema);
 
-export const inputValidation = (input) => {};
+export const inputValidation = (input) => {
+  const schema = Joi.object({
+    
+  })
+};
