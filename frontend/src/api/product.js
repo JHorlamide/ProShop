@@ -3,7 +3,7 @@ import axios from 'axios';
 const url = '/api/products';
 
 /***
- * @router  GET: api/products
+ * @router  GET: /api/products
  * @desc    Get all products
  * @access  Public
  * ***/

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts } from '../../actions/product';
@@ -26,6 +26,7 @@ const HomeScreen = () => {
     };
   }, [dispatch]);
 
+
   console.log('Products HomeScreen:', products);
   console.log('Loading HomeScreen:', loading);
   console.log('Error HomeScreen:', error);
@@ -33,9 +34,7 @@ const HomeScreen = () => {
   return (
     <Fragment>
       <h1>Latest Products</h1>
-      {loading && error ? (
-        <Loader />
-      ) : (
+      {loading && error ? (<Loader />) : (
         <Row>
           {products.map((product) => {
             return (

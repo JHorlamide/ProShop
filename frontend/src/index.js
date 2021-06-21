@@ -1,18 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './bootstrap.min.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
+import React from 'react';
+import ReactDOM from 'react-dom';
 /* Redux Implementation */
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+import App from './App';
+import './bootstrap.min.css';
+import './index.css';
 import rootReducers from './reducers';
+import reportWebVitals from './reportWebVitals';
 
 /* Cart from localStorage */
 const cartFromLocalStorage = localStorage.getItem('cartItems')
@@ -23,6 +22,7 @@ const cartFromLocalStorage = localStorage.getItem('cartItems')
 const initialState = {
   cart: { cartItems: cartFromLocalStorage },
 };
+
 const middleware = [thunk];
 
 /* Create store */

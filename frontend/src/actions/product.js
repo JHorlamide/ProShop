@@ -1,5 +1,4 @@
 import * as api from '../api/product';
-import axios from 'axios';
 import { GET_PRODUCTS, GET_PRODUCT, PRODUCT_FAIL } from '../constant/types';
 
 export const getProducts = (source) => {

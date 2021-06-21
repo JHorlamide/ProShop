@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constant/types';
+import { CART_ADD_ITEM } from '../constant/types';
 
 const initialState = {
   cartItems: [],
@@ -12,14 +12,14 @@ const cartReducer = (state = initialState, action) => {
       const item = payload;
 
       const existItem = state.cartItems.find((cartItem) => {
-        return (cartItem.product = item.product);
+        return cartItem.product === item.product;
       });
 
       if (existItem) {
         return {
           ...state,
           cartItems: state.cartItems.map((cartItem) => {
-            return (cartItem.product = existItem.product ? item : cartItem);
+            return cartItem.product === existItem.product ? item : cartItem;
           }),
         };
       } else {
@@ -28,8 +28,6 @@ const cartReducer = (state = initialState, action) => {
           cartItems: [...state.cartItems, item],
         };
       }
-    case CART_REMOVE_ITEM:
-      return {};
     default:
       return state;
   }

@@ -23,6 +23,7 @@ const CartScreen = ({ match, location, history }) => {
     const source = axios.CancelToken.source();
 
     if (productId) dispatch(addToCart(productId, qty, source));
+
     return () => {
       return source.cancel('Request canceled');
     };
