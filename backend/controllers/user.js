@@ -4,7 +4,7 @@ import { User, inputValidation } from '../models/User.js';
 
 /***
  * @router  GET: api/user
- * @desc    Get authenticated user
+ * @desc    Create new user
  * @access  Public
  * ***/
 export const createUser = asyncMiddleware(async (req, res) => {
@@ -21,6 +21,12 @@ export const createUser = asyncMiddleware(async (req, res) => {
 
   user = new User({ name, email, password, isAdmin });
 
+  /* Hash user password */
+  const salt = await bcrypt.genSalt(12);
+  user.password = await bcrypt.hash(user.password, salt);
+  const token = user.generateAuthToken();
+
+  /* Save user to the database and send token to client */
   await user.save();
-  res.json(user);
+  res.json(token);
 });

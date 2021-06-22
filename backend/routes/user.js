@@ -1,14 +1,14 @@
 import express from 'express';
 
 /* Controllers */
-import { getUser } from '../controllers/user.js';
+import { createUser } from '../controllers/user.js';
 
 const router = express.Router();
 
 /***
  * @router  GET: api/user
- * @desc    Get authenticate user.
+ * @desc    Create new user.
  * ***/
-router.get('/', getUser);
+router.get('/', createUser);
 
 export default router;

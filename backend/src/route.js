@@ -11,7 +11,7 @@ import { errorHandler, notFound } from '../middlewares/error_handler.js';
 const route = (app) => {
   app.use(express.json({ extended: false }));
 
-  app.use('/api/users', userRoute);
+  app.use('/api/user', userRoute);
   app.use('/api/products', productRoute);
   app.use('/api/auth', authRoute);
 

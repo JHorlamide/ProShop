@@ -16,7 +16,7 @@ export const getProducts = asyncMiddleware(async (req, res) => {
  * @desc    Get single product by Id
  * @access  Public
  * ***/
-export const getProduct = asyncMiddleware(async (req, res) => {
+export const getProductById = asyncMiddleware(async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (!product) {
     res.status(404);

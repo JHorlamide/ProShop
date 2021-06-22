@@ -34,8 +34,32 @@ const userSchema = new mongoose.Schema(
 /* Define model */
 export const User = mongoose.model('User', userSchema);
 
+/* Input validation */
 export const inputValidation = (input) => {
   const schema = Joi.object({
-    
-  })
+    name: Joi.string().min(5).max(255).required(),
+    email: Joi.string()
+      .lowercase('lower')
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ['com', 'net'] },
+      }),
+    password: Joi.string().min(5).max(20).required(),
+  });
+
+  schema.validate(input);
+};
+
+/* JsonWebToken */
+userSchema.methods.generateAuthToken = function () {
+  const payload = {
+    id: this.id,
+    isAdmin: this.isAdmin,
+  };
+
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: 3600,
+  });
+
+  return token;
 };
