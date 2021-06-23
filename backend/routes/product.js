@@ -6,13 +6,13 @@ import { getProducts, getProductById } from '../controllers/product.js';
 
 /***
  * @router  GET: api/products
- * @desc    Authenticate admin.
+ * @desc    Get all products.
  * ***/
 router.get('/', getProducts);
 
 /***
  * @router  GET: api/products/:id
- * @desc    Get single product
+ * @desc    Get product by id
  * ***/
 router.get('/:id', getProductById);
 

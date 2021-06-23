@@ -1,14 +1,13 @@
 import express from 'express';
+const router = express.Router();
 
 /* Controllers */
 import { createUser } from '../controllers/user.js';
 
-const router = express.Router();
-
 /***
- * @router  GET: api/user
+ * @router  GET: api/user/register
  * @desc    Create new user.
  * ***/
-router.get('/', createUser);
+router.post('/register', createUser);
 
 export default router;

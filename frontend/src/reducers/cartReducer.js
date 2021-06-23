@@ -1,10 +1,6 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constant/types';
 
-const initialState = {
-  cartItems: [],
-};
-
-const cartReducer = (state = initialState, action) => {
+const cartReducer = (state = { cartItems: [] }, action) => {
   const { type, payload } = action;
 
   switch (type) {

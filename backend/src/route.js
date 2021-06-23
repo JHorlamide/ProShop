@@ -9,10 +9,10 @@ import authRoute from '../routes/auth.js';
 import { errorHandler, notFound } from '../middlewares/error_handler.js';
 
 const route = (app) => {
-  app.use(express.json({ extended: false }));
+  app.use(express.json());
 
-  app.use('/api/user', userRoute);
   app.use('/api/products', productRoute);
+  app.use('/api/users', userRoute);
   app.use('/api/auth', authRoute);
 
   app.use(notFound);

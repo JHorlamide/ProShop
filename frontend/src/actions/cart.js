@@ -40,6 +40,9 @@ export const removeFromCart = (id) => {
       },
     });
 
-    localStorage.setItem('cartItems', JSON.stringify(getState.cart.cartItems));
+    localStorage.setItem(
+      'cartItems',
+      JSON.stringify(getState().cart.cartItems)
+    );
   };
 };

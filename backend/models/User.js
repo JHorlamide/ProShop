@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import Joi from 'joi';
 
 const userSchema = new mongoose.Schema(
@@ -31,8 +32,22 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-/* Define model */
-export const User = mongoose.model('User', userSchema);
+
+/* JsonWebToken */
+userSchema.methods.generateAuthToken = function () {
+  const payload = {
+    id: this.id,
+    isAdmin: this.isAdmin,
+  };
+
+  const token = jwt.sign(payload, process.env.JWT_SECRET);
+
+  return token;
+};
+
+userSchema.methods.matchPassword = async function (userPassword) {
+  return await bcrypt.compare(userPassword, this.password);
+};
 
 /* Input validation */
 export const inputValidation = (input) => {
@@ -47,19 +62,9 @@ export const inputValidation = (input) => {
     password: Joi.string().min(5).max(20).required(),
   });
 
-  schema.validate(input);
+  return schema.validate(input);
 };
 
-/* JsonWebToken */
-userSchema.methods.generateAuthToken = function () {
-  const payload = {
-    id: this.id,
-    isAdmin: this.isAdmin,
-  };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: 3600,
-  });
-
-  return token;
-};
+/* Define model */
+export const User = mongoose.model('User', userSchema);

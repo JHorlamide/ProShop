@@ -3,11 +3,10 @@ import { authenticateUser } from '../controllers/auth.js';
 
 const router = express.Router();
 
-
 /***
- * @router  GET: api/products
- * @desc    Authenticate admin.
+ * @router  POST: api/auth/login
+ * @desc    Authenticate user & get token.
  * ***/
-router.get('/login', authenticateUser);
+router.post('/login', authenticateUser);
 
 export default router;

@@ -1,7 +1,4 @@
 import mongoose from 'mongoose';
-import debug from 'debug';
-
-const dbConnection = debug('db:connected');
 
 const connectDB = async () => {
   try {
@@ -12,8 +9,8 @@ const connectDB = async () => {
       useFindAndModify: false,
     });
 
-    dbConnection(
-      `Mongodb connected... ${conn.connection.host}`.blue.underline.bold
+    console.log(
+      `Mongodb connected... ${conn.connection.host}`.yellow.underline.bold
     );
   } catch (error) {
     console.error(`Error: ${error.message}`.red.underline.bold);
