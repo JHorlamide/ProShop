@@ -32,22 +32,34 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 /* JsonWebToken */
 userSchema.methods.generateAuthToken = function () {
   const payload = {
-    id: this.id,
+    _id: this.id,
     isAdmin: this.isAdmin,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET);
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' });
 
   return token;
 };
 
+/* Validate Password */ 
 userSchema.methods.matchPassword = async function (userPassword) {
   return await bcrypt.compare(userPassword, this.password);
 };
+
+/* Hash user password before saving to database */
+userSchema.pre('save', async function (next) {
+
+  /* Execute if the password is sent or modified */
+  if (!this.isModified('password')) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
+});
 
 /* Input validation */
 export const inputValidation = (input) => {
@@ -64,7 +76,6 @@ export const inputValidation = (input) => {
 
   return schema.validate(input);
 };
-
 
 /* Define model */
 export const User = mongoose.model('User', userSchema);

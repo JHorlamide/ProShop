@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProduct } from '../../actions/product';
+import { getProduct } from '../../actions/productAction';
 import {
   Row,
   Col,

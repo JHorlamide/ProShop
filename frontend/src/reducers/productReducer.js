@@ -1,4 +1,4 @@
-import { GET_PRODUCTS, GET_PRODUCT, PRODUCT_FAIL } from '../constant/types';
+import { GET_PRODUCTS, GET_PRODUCT, PRODUCT_FAIL } from '../constant/productConstant';
 
 const initialState = {
   product: {},

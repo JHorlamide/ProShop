@@ -1,9 +1,5 @@
-import Joi from 'joi';
-import bcrypt from 'bcryptjs';
 import asyncMiddleware from '../middlewares/async.js';
 import { User, inputValidation } from '../models/User.js';
-
-
 
 /***
  * @router  GET: api/user
@@ -11,7 +7,7 @@ import { User, inputValidation } from '../models/User.js';
  * @access  Public
  * ***/
 export const createUser = asyncMiddleware(async (req, res) => {
-  const { name, email, password, isAdmin } = req.body;
+  const { name, email, password } = req.body;
 
   /* Validate user input */
   const { error } = inputValidation({ name, email, password });
@@ -20,20 +16,41 @@ export const createUser = asyncMiddleware(async (req, res) => {
     return res.status(400).json({ message: error.details[0].message });
   }
 
-  /* Check if user exist */
   let user = await User.findOne({ email: email });
+  
+  /* Check if user exist */
   if (user) return res.status(400).json({ message: 'User already exist' });
 
   /* If user does not exist, create new user */
-  user = new User({ name, email, password, isAdmin });
+  user = await User.create({ name, email, password });
 
-  /* Hash user password */
-  const salt = await bcrypt.genSalt(12);
-  user.password = await bcrypt.hash(user.password, salt);
+  if (!user) {
+    return res.status(400).json({ message: 'Invalid user data' });
+  }
 
-  /* Save user to the database and send token to client */
-  await user.save();
-  // return res.json(user);
+  res.status(201).json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    token: user.generateAuthToken(),
+  });
+});
 
-  res.json({ token: user.generateAuthToken() });
+/***
+ * @router  GET: api/user/profile
+ * @desc    Get user profile
+ * @access  Private
+ * ***/
+export const getUserProfile = asyncMiddleware(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user) return res.status(400).json({ message: 'Not Authorized' });
+
+  res.json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  });
 });

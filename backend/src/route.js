@@ -6,7 +6,11 @@ import productRoute from '../routes/product.js';
 import authRoute from '../routes/auth.js';
 
 /* Middleware */
-import { errorHandler, notFound } from '../middlewares/error_handler.js';
+import {
+  objectIdErrorHandler,
+  errorHandler,
+  notFound,
+} from '../middlewares/error_handler.js';
 
 const route = (app) => {
   app.use(express.json());
@@ -17,6 +21,7 @@ const route = (app) => {
 
   app.use(notFound);
   app.use(errorHandler);
+  app.use(objectIdErrorHandler);
 };
 
 export default route;

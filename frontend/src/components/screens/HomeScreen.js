@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProducts } from '../../actions/product';
+import { getProducts } from '../../actions/productAction';
 
 /* Custom Component */
 import Products from '../product/Product';
@@ -16,6 +16,7 @@ const HomeScreen = () => {
     (state) => state.productList
   );
 
+
   useEffect(() => {
     const source = axios.CancelToken.source();
 
@@ -26,7 +27,6 @@ const HomeScreen = () => {
     };
   }, [dispatch]);
 
-
   console.log('Products HomeScreen:', products);
   console.log('Loading HomeScreen:', loading);
   console.log('Error HomeScreen:', error);
@@ -34,7 +34,9 @@ const HomeScreen = () => {
   return (
     <Fragment>
       <h1>Latest Products</h1>
-      {loading && error ? (<Loader />) : (
+      {loading && error ? (
+        <Loader />
+      ) : (
         <Row>
           {products.map((product) => {
             return (

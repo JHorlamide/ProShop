@@ -10,7 +10,7 @@ import {
   Image,
   ListGroup,
 } from 'react-bootstrap';
-import { addToCart, removeFromCart } from '../../actions/cart';
+import { addToCart, removeFromCart } from '../../actions/cartAction';
 import axios from 'axios';
 
 const CartScreen = ({ match, location, history }) => {

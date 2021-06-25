@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constant/types';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constant/cartConstant';
 
 const cartReducer = (state = { cartItems: [] }, action) => {
   const { type, payload } = action;

@@ -1,13 +1,27 @@
 import * as api from '../api/product';
-import { GET_PRODUCTS, GET_PRODUCT, PRODUCT_FAIL } from '../constant/types';
+import {
+  GET_PRODUCTS,
+  GET_PRODUCT,
+  PRODUCT_FAIL,
+} from '../constant/productConstant';
+import axios from 'axios';
 
 export const getProducts = (source) => {
   return async (dispatch) => {
     try {
       const { data } = await api.getProducts(source);
-      // const { data } = await axios.get('/api/products', {
-      //   cancelToken: source.token,
-      // });
+
+      // const createUser = async () => {
+      //   const { userData } = await axios.get('/api/products', {
+      //     firstName: 'Olamide',
+      //     lastName: 'Jubril',
+      //     email: 'olamide_jubril@outlook.com',
+      //     phone: '555-555-555',
+      //     password: 'Olamide',
+      //   });
+
+      //   console.log(userData);
+      // };
 
       dispatch({
         type: GET_PRODUCTS,
