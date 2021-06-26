@@ -7,17 +7,43 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
+  USER_LOGOUT,
 } from '../constants/userConstant';
 
-export const userLogin = (loginData) => {
+/* Register action */
+export const register = (registerData) => {
   return async (dispatch) => {
     try {
-      const { data } = await api.loginUser(loginData);
+      dispatch({ type: USER_REGISTER_REQUEST });
+
+      const { data } = await api.register(registerData);
+
+      dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+
+      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+
+      localStorage.setItem('userInfo', JSON.stringify(data));
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch({
+          type: USER_REGISTER_FAIL,
+          payload: error.response.data.message,
+        });
+      }
+    }
+  };
+};
+
+/* Login action */
+export const login = (loginData) => {
+  return async (dispatch) => {
+    try {
       dispatch({ type: USER_LOGIN_REQUEST });
-      dispatch({
-        type: USER_LOGIN_SUCCESS,
-        payload: data,
-      });
+
+      const { data } = await api.login(loginData);
+
+      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
       localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
@@ -25,12 +51,17 @@ export const userLogin = (loginData) => {
         dispatch(setAlert(error.response.data.message, 'danger'));
         dispatch({
           type: USER_LOGIN_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
+          payload: error.response.data.message,
         });
       }
     }
+  };
+};
+
+/* Logout action */ 
+export const logoutUser = () => {
+  return async (dispatch) => {
+    localStorage.removeItem('userInfo');
+    dispatch({ type: USER_LOGOUT });
   };
 };

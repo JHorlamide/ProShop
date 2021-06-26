@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { login } from '../../actions/userAction';
+import { setAlert } from '../../actions/alertAction';
+import { register } from '../../actions/userAction';
 
 /* Custom Component */
 import FormComponent from '../form_component/FormComponent';
@@ -10,18 +11,20 @@ import Loader from '../layouts/Loader';
 /* React Bootstrap Components*/
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
-const LoginScreen = ({ history, location }) => {
+const RegisterScreen = ({ location, history }) => {
   const dispatch = useDispatch();
-  const [loginData, setLoginData] = useState({
+  const [registerData, setRegisterData] = useState({
+    name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
 
-  const { email, password } = loginData;
+  const { name, email, password, confirmPassword } = registerData;
 
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
-  const { loading, userInfo } = useSelector((state) => state.userLogin);
+  const { loading, userInfo } = useSelector((state) => state.userRegister);
 
   useEffect(() => {
     if (userInfo) {
@@ -30,20 +33,36 @@ const LoginScreen = ({ history, location }) => {
   }, [history, userInfo, redirect]);
 
   const onChange = (e) => {
-    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(login({ email, password }));
+    if (password !== confirmPassword) {
+      return dispatch(setAlert('Passwords do not match', 'info'));
+    } else {
+      return dispatch(register({ name, email, password }));
+    }
   };
 
   return (
     <FormComponent>
-      <h1>Sign In</h1>
+      <h1>Sign Up</h1>
       {loading && <Loader />}
       <Form onSubmit={(e) => handleSubmit(e)}>
+        {/* name */}
+        <Form.Group controlId='email'>
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type='text'
+            name='name'
+            value={name}
+            placeholder='Enter Name'
+            onChange={(e) => onChange(e)}
+          ></Form.Control>
+        </Form.Group>
+
         {/* Email */}
         <Form.Group controlId='email'>
           <Form.Label>Email Address</Form.Label>
@@ -68,15 +87,27 @@ const LoginScreen = ({ history, location }) => {
           ></Form.Control>
         </Form.Group>
 
+        {/* Confirm Password */}
+        <Form.Group controlId='confirmPassword'>
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type='password'
+            name='confirmPassword'
+            value={confirmPassword}
+            placeholder='Enter Password'
+            onChange={(e) => onChange(e)}
+          ></Form.Control>
+        </Form.Group>
+
         <Button type='submit' variant='primary' className='my-3'>
-          Sign In
+          Register
         </Button>
       </Form>
       <Row className='py-3'>
         <Col>
-          New customer ?{' '}
-          <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-            Register
+          Have an account ?{' '}
+          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+           Login
           </Link>
         </Col>
       </Row>
@@ -84,4 +115,4 @@ const LoginScreen = ({ history, location }) => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;

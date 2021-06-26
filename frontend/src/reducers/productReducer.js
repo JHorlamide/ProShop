@@ -7,7 +7,7 @@ const initialState = {
   error: {},
 };
 
-const productReducer = (state = initialState, action) => {
+export const productReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -34,5 +34,3 @@ const productReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default productReducer;

@@ -36,21 +36,3 @@ export const createUser = asyncMiddleware(async (req, res) => {
     token: user.generateAuthToken(),
   });
 });
-
-/***
- * @router  GET: api/user/profile
- * @desc    Get user profile
- * @access  Private
- * ***/
-export const getUserProfile = asyncMiddleware(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (!user) return res.status(400).json({ message: 'Not Authorized' });
-
-  res.json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    isAdmin: user.isAdmin,
-  });
-});

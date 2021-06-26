@@ -1,6 +1,6 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstant';
 
-const cartReducer = (state = { cartItems: [] }, action) => {
+export const cartReducer = (state = { cartItems: [] }, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -35,5 +35,3 @@ const cartReducer = (state = { cartItems: [] }, action) => {
       return state;
   }
 };
-
-export default cartReducer;
