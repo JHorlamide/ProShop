@@ -3,8 +3,7 @@ import {
   GET_PRODUCTS,
   GET_PRODUCT,
   PRODUCT_FAIL,
-} from '../constant/productConstant';
-import axios from 'axios';
+} from '../constants/productConstant';
 
 export const getProducts = (source) => {
   return async (dispatch) => {

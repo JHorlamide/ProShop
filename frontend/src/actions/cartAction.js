@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constant/cartConstant';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstant';
 import axios from 'axios';
 
 export const addToCart = (id, qty, source) => {

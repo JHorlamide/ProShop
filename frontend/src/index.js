@@ -19,9 +19,15 @@ const cartFromLocalStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
   : [];
 
+/* User from localStorage */
+const userInfoFromLocalStorage = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo'))
+  : null;
+
 /* Redux Initialization */
 const initialState = {
   cart: { cartItems: cartFromLocalStorage },
+  userLogin: { userInfo: userInfoFromLocalStorage },
 };
 
 const middleware = [thunk];

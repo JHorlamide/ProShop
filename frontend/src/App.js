@@ -2,8 +2,10 @@
 import Header from './components/layouts/Header';
 import Footer from './components/layouts/Footer';
 import HomeScreen from './components/screens/HomeScreen';
-import ProductScreen from './components/screens/ProductDetailsScreen';
+import LoginScreen from './components/screens/LoginScreen';
 import CartScreen from './components/screens/CartScreen';
+import Message from './components/layouts/Message';
+import ProductScreen from './components/screens/ProductDetailsScreen';
 
 /* React Bootstrap */
 import { Container } from 'react-bootstrap';
@@ -15,9 +17,11 @@ function App() {
       <Header />
       <main className='py-3'>
         <Container>
-          <Route path='/' exact component={HomeScreen} />
-          <Route path='/product/:id' exact component={ProductScreen} />
-          <Route path='/cart/:id?' exact component={CartScreen} />
+          <Message />
+          <Route exact path='/login' component={LoginScreen} />
+          <Route exact path='/product/:id' component={ProductScreen} />
+          <Route exact path='/cart/:id?' component={CartScreen} />
+          <Route exact path='/' component={HomeScreen} />
         </Container>
       </main>
       <Footer />
