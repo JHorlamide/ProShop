@@ -8,6 +8,12 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGOUT,
+  USER_DETAILS_REQUEST,
+  USER_DETAILS_SUCCESS,
+  USER_DETAILS_FAIL,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_PROFILE_FAIL
 } from '../constants/userConstant';
 
 /* Register action */
@@ -58,10 +64,63 @@ export const login = (loginData) => {
   };
 };
 
-/* Logout action */ 
+/* Logout action */
 export const logoutUser = () => {
   return async (dispatch) => {
     localStorage.removeItem('userInfo');
     dispatch({ type: USER_LOGOUT });
+  };
+};
+
+/*** Get User Profile ***/
+export const getUserProfile = (id) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: USER_DETAILS_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const { data } = await api.getUserProfile(id, userInfo.token,);
+
+      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch({
+          type: USER_DETAILS_FAIL,
+          payload: error.response.data.message,
+        });
+      }
+    }
+  };
+};
+
+
+/*** Update User Profile ***/
+export const updateUserProfile = (profileData) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const { data } = await api.updateUserProfile(profileData, userInfo.token,);
+
+      dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
+
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch({
+          type: USER_UPDATE_PROFILE_FAIL,
+          payload: error.response.data.message,
+        });
+      }
+    }
   };
 };

@@ -6,6 +6,8 @@ import HomeScreen from './components/screens/HomeScreen';
 import CartScreen from './components/screens/CartScreen';
 import LoginScreen from './components/screens/LoginScreen';
 import RegisterScreen from './components/screens/RegisterScreen';
+import ProfileScreen from './components/screens/ProfileScreen';
+import ShippingScreen from './components/screens/ShippingScreen';
 import ProductScreen from './components/screens/ProductDetailsScreen';
 
 /* React Bootstrap */
@@ -21,8 +23,10 @@ function App() {
           <Message />
           <Route exact path='/login' component={LoginScreen} />
           <Route exact path='/register' component={RegisterScreen} />
+          <Route exact path='/profile' component={ProfileScreen} />
           <Route exact path='/product/:id' component={ProductScreen} />
           <Route exact path='/cart/:id?' component={CartScreen} />
+          <Route exact path='/shipping' component={ShippingScreen} />
           <Route exact path='/' component={HomeScreen} />
         </Container>
       </main>

@@ -24,9 +24,17 @@ const userInfoFromLocalStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
 
+/* Shipping Address From localStorage */
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
+  ? JSON.part(localStorage.getItem('shippingAddress'))
+  : {};
+
 /* Redux Initialization */
 const initialState = {
-  cart: { cartItems: cartFromLocalStorage },
+  cart: {
+    cartItems: cartFromLocalStorage,
+    shippingAddress: shippingAddressFromStorage,
+  },
   userLogin: { userInfo: userInfoFromLocalStorage },
 };
 

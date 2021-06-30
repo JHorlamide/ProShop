@@ -7,7 +7,6 @@ import { logoutUser } from '../../actions/userAction';
 const Header = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userLogin.userInfo);
-  console.log('From headerScreen', userInfo);
 
   const logoutHandler = () => {
     dispatch(logoutUser());
@@ -34,7 +33,7 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
 
-              {/* Login */}
+              {/* Login user */}
               {userInfo ? (
                 <NavDropdown
                   title={userInfo ? userInfo.name : ''}
@@ -47,7 +46,7 @@ const Header = () => {
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
-              ) : (
+              ) : ( 
                 <LinkContainer to='/login'>
                   <Nav.Link>
                     <i className='fas fa-user'></i> Sign In
