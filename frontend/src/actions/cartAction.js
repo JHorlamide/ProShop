@@ -54,9 +54,11 @@ export const removeFromCart = (id) => {
 export const saveShippingAddress = (data) => {
   return async (dispatch) => {
     dispatch({
-    type: CART_SAVE_SHIPPING_ADDRESS,
+      type: CART_SAVE_SHIPPING_ADDRESS,
       payload: data,
     });
+
+    console.log(data);
 
     localStorage.setItem('shippingAddress', JSON.stringify(data));
   };

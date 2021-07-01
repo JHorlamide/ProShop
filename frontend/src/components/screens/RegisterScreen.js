@@ -50,7 +50,7 @@ const RegisterScreen = ({ location, history }) => {
     <FormComponent>
       <h1>Sign Up</h1>
       {loading && <Loader />}
-      <Form onSubmit={(e) => handleSubmit(e)}>
+      <Form onSubmit={handleSubmit}>
         {/* name */}
         <Form.Group controlId='email'>
           <Form.Label>Name</Form.Label>
@@ -107,7 +107,7 @@ const RegisterScreen = ({ location, history }) => {
         <Col>
           Have an account ?{' '}
           <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-           Login
+            Login
           </Link>
         </Col>
       </Row>
