@@ -5,7 +5,7 @@ import { setAlert } from '../../actions/alertAction';
 import { register } from '../../actions/userAction';
 
 /* Custom Component */
-import FormComponent from '../form_component/FormComponent';
+import FormContainer from '../form_component/FormComponent';
 import Loader from '../layouts/Loader';
 
 /* React Bootstrap Components*/
@@ -47,7 +47,7 @@ const RegisterScreen = ({ location, history }) => {
   };
 
   return (
-    <FormComponent>
+    <FormContainer>
       <h1>Sign Up</h1>
       {loading && <Loader />}
       <Form onSubmit={handleSubmit}>
@@ -111,7 +111,7 @@ const RegisterScreen = ({ location, history }) => {
           </Link>
         </Col>
       </Row>
-    </FormComponent>
+    </FormContainer>
   );
 };
 

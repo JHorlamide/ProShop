@@ -8,6 +8,8 @@ import LoginScreen from './components/screens/LoginScreen';
 import RegisterScreen from './components/screens/RegisterScreen';
 import ProfileScreen from './components/screens/ProfileScreen';
 import ShippingScreen from './components/screens/ShippingScreen';
+import PaymentScreen from './components/screens/PaymentScreen';
+import PlaceOrderScreen from './components/screens/PlaceOrderScreen';
 import ProductScreen from './components/screens/ProductDetailsScreen';
 
 /* React Bootstrap */
@@ -27,6 +29,8 @@ function App() {
           <Route exact path='/product/:id' component={ProductScreen} />
           <Route exact path='/cart/:id?' component={CartScreen} />
           <Route exact path='/shipping' component={ShippingScreen} />
+          <Route exact path='/payment' component={PaymentScreen} />
+          <Route exact path='/placeorder' component={PlaceOrderScreen} />
           <Route exact path='/' component={HomeScreen} />
         </Container>
       </main>

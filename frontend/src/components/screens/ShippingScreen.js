@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import { saveShippingAddress } from '../../actions/cartAction';
 import { setAlert } from '../../actions/alertAction';
 
 /* Custom Component */
-import FormComponent from '../../components/form_component/FormComponent';
+import FormContainer from '../../components/form_component/FormComponent';
+import CheckoutSteps from '../../components/layouts/CheckOutSteps';
 
-const Shipping = ({ history }) => {
+const ShippingScreen = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
 
   const [shippingData, setShippingData] = useState({
-    address: '',
-    city: '',
-    country: '',
-    postalCode: '',
+    address: shippingAddress.address ? shippingAddress.address : '',
+    city: shippingAddress.city ? shippingAddress.city : '',
+    country: shippingAddress.country ? shippingAddress.country : '',
+    postalCode: shippingAddress.postalCode ? shippingAddress.postal : '',
   });
 
   const { address, city, country, postalCode } = shippingData;
-  
+
   const onChange = (e) => {
     setShippingData({
       ...shippingData,
@@ -28,23 +29,24 @@ const Shipping = ({ history }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-
     if (!(address || city || country || postalCode)) {
       return dispatch(setAlert('Please provide the shipping data', 'info'));
     }
-
     dispatch(saveShippingAddress(shippingData));
-
     history.push('/payment');
   };
 
   return (
-    <FormComponent>
-      <h1>Shipping</h1>
+    <FormContainer>
+      {/* Check out steps */}
 
-      <Form onSubmit={handleSubmit}>
+      <CheckoutSteps step1 step2 />
+
+      <h1 className='text-uppercase'>Shipping</h1>
+
+      <Form onSubmit={submitHandler}>
         {/* Address */}
         <Form.Group controlId='address' className='my-3'>
           <Form.Label>Address</Form.Label>
@@ -54,6 +56,7 @@ const Shipping = ({ history }) => {
             value={address}
             placeholder='Enter Address'
             onChange={(e) => onChange(e)}
+            required
           ></Form.Control>
         </Form.Group>
 
@@ -94,12 +97,12 @@ const Shipping = ({ history }) => {
         </Form.Group>
 
         {/*  */}
-        <Button type='button' className='btn btn-dark my-3' variant='primary'>
+        <Button type='submit' className='btn btn-dark my-3'>
           Continue
         </Button>
       </Form>
-    </FormComponent>
+    </FormContainer>
   );
 };
 
-export default Shipping;
+export default ShippingScreen;
