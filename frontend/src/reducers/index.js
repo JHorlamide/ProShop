@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import { productReducer } from './productReducer';
 import { cartReducer } from './cartReducer';
 import { alertReducer } from './alertReducer';
-import { orderCreateReducer } from './orderReducer';
+import { orderCreateReducer, orderDetailsReducer } from './orderReducer';
 import {
   userRegisterReducer,
   userLoginReducer,
@@ -23,4 +23,5 @@ export default combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
 });
