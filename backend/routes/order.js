@@ -3,12 +3,12 @@ import auth from '../middlewares/auth.js';
 const router = express.Router();
 
 /* Controllers */
-import { order } from '../controllers/order.js';
+import { addOrderItem } from '../controllers/order.js';
 
 /***
  * @router  POST: api/order
  * @desc    Create new order.
  * ***/
-router.post('/', auth, order);
+router.post('/', auth, addOrderItem);
 
 export default router;

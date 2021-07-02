@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Button, Row, Col, Image, ListGroup, Card } from 'react-bootstrap';
+import { createOrder } from '../../actions/orderAction';
+import Message from '../layouts/Message';
 
 /* Custom Component */
 import CheckOutSteps from '../layouts/CheckOutSteps';
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = ({ history }) => {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { shippingAddress, paymentMethod, cartItems } = cart;
 
@@ -34,8 +37,30 @@ const PlaceOrderScreen = () => {
     Number(cart.taxPrice)
   ).toFixed(2);
 
+  const orderCreate = useSelector((state) => state.orderCreate);
+
+  const { order, success, error } = orderCreate;
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/order/${order._id}`);
+    }
+
+    // eslint-disable-next-line
+  }, [history, success]);
+
   const placeOrderHandler = () => {
-    console.log('Order placed');
+    dispatch(
+      createOrder({
+        orderItems: cartItems,
+        shippingAddress,
+        paymentMethod,
+        totalPrice: cart.totalPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        itemsPrice: cart.itemsPrice,
+      })
+    );
   };
 
   return (
@@ -147,6 +172,11 @@ const PlaceOrderScreen = () => {
                   </Col>
                   <Col>${cart.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+
+              {/* Error Message */}
+              <ListGroup.Item>
+                {error && <Message>{error}</Message>}
               </ListGroup.Item>
 
               {/* Place order Button*/}

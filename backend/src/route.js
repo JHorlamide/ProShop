@@ -19,7 +19,7 @@ const route = (app) => {
   app.use('/api/products', productRoute);
   app.use('/api/users', userRoute);
   app.use('/api/auth', authRoute);
-  app.use('/api/order', orderRoute);
+  app.use('/api/orders', orderRoute);
 
   app.use(notFound);
   app.use(errorHandler);

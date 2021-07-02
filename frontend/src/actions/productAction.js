@@ -1,4 +1,4 @@
-import * as api from '../api/product';
+import * as api from '../api/productApi';
 import {
   GET_PRODUCTS,
   GET_PRODUCT,
