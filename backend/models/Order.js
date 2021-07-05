@@ -34,7 +34,7 @@ const orderSchema = new mongoose.Schema(
     paymentResult: {
       id: { type: String },
       update_time: { type: String },
-      status: { String },
+      status: { type: String },
       email_address: { type: String },
     },
 

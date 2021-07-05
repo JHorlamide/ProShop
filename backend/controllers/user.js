@@ -87,3 +87,74 @@ export const updateUserProfile = asyncMiddleware(async (req, res) => {
     throw new Error('User not found');
   }
 });
+
+/***
+ * @router  GET: api/users
+ * @desc    GET all users
+ * @access  Private/Admin
+ * ***/
+export const getUsers = asyncMiddleware(async (req, res) => {
+  const users = await User.find({});
+
+  res.json(users);
+});
+
+/***
+ * @router  DELETE: api/users/:id
+ * @desc    Delete User
+ * @access  Private/Admin
+ * ***/
+export const deleteUser = asyncMiddleware(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    await user.remove();
+    res.json({ message: 'User removed successfully' });
+  } else {
+    res.status(400);
+    throw new Error('User not found');
+  }
+});
+
+/***
+ * @router  GET: api/users/:id
+ * @desc    Get User By Id
+ * @access  Private/Admin
+ * ***/
+export const getUsersById = asyncMiddleware(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password');
+
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+/***
+ * @router  PUT: api/users/:id
+ * @desc    Update User By Id
+ * @access  Private/Admin
+ * ***/
+export const updateUser = asyncMiddleware(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});

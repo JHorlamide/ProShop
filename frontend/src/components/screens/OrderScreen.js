@@ -1,70 +1,88 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { PayPalButton } from 'react-paypal-button-v2';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col, Image, ListGroup, Card } from 'react-bootstrap';
-import { createOrder } from '../../actions/orderAction';
+import { Row, Col, Image, ListGroup, Card, Alert } from 'react-bootstrap';
+import {
+  getOrderDetails,
+  payOrder,
+  orderPayReset,
+} from '../../actions/orderAction';
 
 /* Custom Component */
-import CheckOutSteps from '../layouts/CheckOutSteps';
+import Loader from '../layouts/Loader';
 
-const PlaceOrderScreen = ({ history }) => {
+const OrderScreen = ({ match }) => {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
-  const { shippingAddress, paymentMethod, cartItems } = cart;
+  const orderId = match.params.id;
+  const [sdkReady, setSdkReady] = useState(false);
 
-  /* Calculate Prices */
-  const addDecimal = (number) => {
-    return (Math.round(number * 100) / 100).toFixed(2);
-  };
+  /* Get order details from state */
+  const orderDetails = useSelector((state) => state.orderDetails);
+  const { order, loading } = orderDetails;
 
-  cart.itemsPrice = addDecimal(
-    cartItems.reduce((acc, item) => {
-      return acc + item.price * item.qty;
-    }, 0)
-  );
+  /* Get pay order details from state */
+  const orderPay = useSelector((state) => state.orderPay);
+  const { success: successPay, loading: loadingPay } = orderPay;
 
-  /* Shipping Price Calculation */
-  cart.shippingPrice = addDecimal(cart.itemsPrice > 100 ? 0 : 100);
 
-  /* Tax Price Calculation */
-  cart.taxPrice = addDecimal(Number((0.15 * cart.itemsPrice).toFixed(2)));
+  /* To ensure the order is loaded  */
+  if (!loading && order) {
+    /* Calculate Prices */
+    const addDecimal = (number) => {
+      return (Math.round(number * 100) / 100).toFixed(2);
+    };
 
-  /* Total Price Calculation */
-  cart.totalPrice = (
-    Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice)
-  ).toFixed(2);
-
-  const orderCreate = useSelector((state) => state.orderCreate);
-
-  const { order, success } = orderCreate;
-
-  useEffect(() => {
-    if (success) {
-      history.push(`/order/${order._id}`);
-    }
-
-    // eslint-disable-next-line
-  }, [history, success]);
-
-  const placeOrderHandler = () => {
-    dispatch(
-      createOrder({
-        orderItems: cartItems,
-        shippingAddress,
-        paymentMethod,
-        totalPrice: cart.totalPrice,
-        shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
-        itemsPrice: cart.itemsPrice,
-      })
+    order.itemsPrice = addDecimal(
+      order.orderItems.reduce((acc, item) => {
+        return acc + item.price * item.qty;
+      }, 0)
     );
+  }
+
+  /*  */
+  useEffect(() => {
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get('/api/config/paypal');
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+
+      document.body.appendChild(script);
+    };
+
+    if (!order || successPay) {
+      dispatch(orderPayReset());
+      dispatch(getOrderDetails(orderId));
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
+    }
+  }, [dispatch, orderId, order, successPay]);
+
+  /* Successful payment of order */
+  const successPaymentHandler = (paymentResult) => {
+    console.log(paymentResult);
+
+    dispatch(payOrder(orderId, paymentResult));
   };
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <>
-      <CheckOutSteps step1 step2 step3 step4 />
+      <h2 className='text-uppercase font-weight-bold'>
+        Order {order ? order._id : ''}
+      </h2>
+
       <Row>
         {/* Item Details */}
         <Col md={8}>
@@ -73,10 +91,32 @@ const PlaceOrderScreen = ({ history }) => {
             <ListGroup.Item>
               <h2 className='text-uppercase'>Shipping</h2>
               <p>
-                <strong>Address:</strong>
-                {shippingAddress.address}, {shippingAddress.city},{' '}
-                {shippingAddress.postalCode}, {shippingAddress.country}.
+                <strong>Name: </strong> {order.user.name}
               </p>
+              <p>
+                <strong>Email: </strong>
+                <a
+                  className='text-decoration-none'
+                  href={`mailto:${order.user.email}`}
+                >
+                  {order.user.email}
+                </a>
+              </p>
+              <p>
+                <strong>Address:</strong>
+                {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
+                {order.shippingAddress.postalCode},{' '}
+                {order.shippingAddress.country}.
+              </p>
+
+              {/* Check to see if user has paid */}
+              {order.isDelivered ? (
+                <Alert variant='success'>
+                  Delivered at {order.deliveredAt}
+                </Alert>
+              ) : (
+                <Alert variant='danger'>Not Delivered</Alert>
+              )}
             </ListGroup.Item>
 
             {/* Payment Method */}
@@ -84,18 +124,25 @@ const PlaceOrderScreen = ({ history }) => {
               <h2 className='text-uppercase'>Payment Method</h2>
               <p>
                 <strong>Method: </strong>
-                {paymentMethod}
+                {order.paymentMethod}
               </p>
+
+              {/* Check to see if user has paid */}
+              {order.isPaid ? (
+                <Alert variant='success'>Paid On {order.paidAt}</Alert>
+              ) : (
+                <Alert variant='danger'>Not Paid</Alert>
+              )}
             </ListGroup.Item>
 
             {/* Order Items */}
             <ListGroup.Item>
               <h2 className='text-uppercase'>Order Items</h2>
-              {cartItems.length === 0 ? (
-                <h2>Your cart is empty</h2>
+              {order.orderItems.length === 0 ? (
+                <h2>Order is empty</h2>
               ) : (
                 <ListGroup variant='flush'>
-                  {cartItems.map((item, index) => {
+                  {order.orderItems.map((item, index) => {
                     return (
                       <ListGroup.Item key={index}>
                         <Row>
@@ -111,7 +158,10 @@ const PlaceOrderScreen = ({ history }) => {
 
                           {/* Item Name */}
                           <Col>
-                            <Link to={`/product/${item.product}`}>
+                            <Link
+                              className='text-decoration-none text-dark'
+                              to={`/product/${item.product}`}
+                            >
                               {item.name}
                             </Link>
                           </Col>
@@ -143,7 +193,7 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items Price:</Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>${order.itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -151,7 +201,7 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping Price:</Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>${order.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -159,7 +209,7 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Tax Price:</Col>
-                  <Col>${cart.taxPrice}</Col>
+                  <Col>${order.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -169,21 +219,24 @@ const PlaceOrderScreen = ({ history }) => {
                   <Col>
                     <strong>Total:</strong>
                   </Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
-              {/* Place order Button*/}
-              <ListGroup>
-                <Button
-                  type='button'
-                  className='btn-block btn-dark'
-                  disabled={cartItems.length === 0}
-                  onClick={placeOrderHandler}
-                >
-                  Place Order
-                </Button>
-              </ListGroup>
+              {/* PayPal button */}
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {loadingPay && <Loader />}
+                  {!sdkReady ? (
+                    <Loader />
+                  ) : (
+                    <PayPalButton
+                      amount={order.totalPrice}
+                      onSuccess={successPaymentHandler}
+                    />
+                  )}
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>
@@ -192,4 +245,4 @@ const PlaceOrderScreen = ({ history }) => {
   );
 };
 
-export default PlaceOrderScreen;
+export default OrderScreen;

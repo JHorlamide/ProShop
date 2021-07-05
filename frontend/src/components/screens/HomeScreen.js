@@ -27,10 +27,6 @@ const HomeScreen = () => {
     };
   }, [dispatch]);
 
-  console.log('Products HomeScreen:', products);
-  console.log('Loading HomeScreen:', loading);
-  console.log('Error HomeScreen:', error);
-
   return (
     <Fragment>
       <h1>Latest Products</h1>
