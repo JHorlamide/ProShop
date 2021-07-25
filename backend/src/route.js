@@ -20,6 +20,8 @@ const route = (app) => {
   app.use('/api/users', userRoute);
   app.use('/api/auth', authRoute);
   app.use('/api/orders', orderRoute);
+
+  /* Send PayPal clientId to Client */ 
   app.get('/api/config/paypal', (req, res) =>
     res.send(process.env.PAYPAL_CLIENT_ID)
   );

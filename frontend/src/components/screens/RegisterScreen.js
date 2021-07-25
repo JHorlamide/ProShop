@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { setAlert } from '../../actions/alertAction';
 import { register } from '../../actions/userAction';
 
+/* React Bootstrap Components*/
+import { Form, Button, Row, Col } from 'react-bootstrap';
+
 /* Custom Component */
 import FormContainer from '../form_component/FormComponent';
 import Loader from '../layouts/Loader';
 
-/* React Bootstrap Components*/
-import { Form, Button, Row, Col } from 'react-bootstrap';
+
 
 const RegisterScreen = ({ location, history }) => {
   const dispatch = useDispatch();

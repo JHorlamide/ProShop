@@ -11,7 +11,6 @@ import Loader from '../layouts/Loader';
 import { Form, Button, Row, Col, Table } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
@@ -32,14 +31,13 @@ const ProfileScreen = ({ history }) => {
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
+    } else if (!(user && user.name)) {
+      dispatch(getUserProfile());
+      // dispatch(getUserProfile('profile'));
+      dispatch(getUserOrder());
     } else {
-      if (!(user && user.name)) {
-        dispatch(getUserProfile('profile'));
-        dispatch(getUserOrder());
-      } else {
-        setName(user.name);
-        setEmail(user.email);
-      }
+      setName(user.name);
+      setEmail(user.email);
     }
   }, [dispatch, history, userInfo, user]);
 
@@ -58,7 +56,7 @@ const ProfileScreen = ({ history }) => {
     <Row>
       {/* Profile */}
       <Col md={3}>
-        <h1>Sign Up</h1>
+        <h1>Update Profile</h1>
         {loading && <Loader />}
         <Form onSubmit={(e) => handleSubmit(e)}>
           {/* Name */}
@@ -135,40 +133,43 @@ const ProfileScreen = ({ history }) => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => {
-                return (
-                  <tr key={order._id}>
-                    <td>{order._id}</td>
-                    <td>{order.createdAt.substring(0, 10)}</td>
-                    <td>{order.totalPrice}</td>
-                    <td>
-                      {order.isPaid ? (
-                        order.paidAt.substring(0, 10)
-                      ) : (
-                        <i
-                          className='fas fa-times'
-                          style={{ color: 'red' }}
-                        ></i>
-                      )}
-                    </td>
-                    <td>
-                      {order.isDelivered ? (
-                        order.deliveredAt.substring(0, 10)
-                      ) : (
-                        <i
-                          className='fas fa-times'
-                          style={{ color: 'red' }}
-                        ></i>
-                      )}
-                    </td>
-                    <td>
+              {orders &&
+                orders.map((order) => {
+                  return (
+                    <tr key={order._id}>
+                      <td>{order._id}</td>
+                      <td>{order.createdAt.substring(0, 10)}</td>
+                      <td>{order.totalPrice}</td>
+                      <td>
+                        {order.isPaid ? (
+                          order.paidAt.substring(0, 10)
+                        ) : (
+                          <i
+                            className='fas fa-times'
+                            style={{ color: 'red' }}
+                          ></i>
+                        )}
+                      </td>
+                      <td>
+                        {order.isDelivered ? (
+                          order.deliveredAt.substring(0, 10)
+                        ) : (
+                          <i
+                            className='fas fa-times'
+                            style={{ color: 'red' }}
+                          ></i>
+                        )}
+                      </td>
+                      <td>
                         <LinkContainer to={`/order/${order._id}`}>
-                          <Button className='btn-sm' variant>Details</Button>
+                          <Button className='btn-sm' variant>
+                            Details
+                          </Button>
                         </LinkContainer>
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </Table>
         )}

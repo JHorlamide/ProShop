@@ -2,7 +2,7 @@ import asyncMiddleware from '../middlewares/async.js';
 import { User, inputValidation } from '../models/User.js';
 
 /***
- * @router  GET: api/user
+ * @router  GET: /api/users
  * @desc    Create new user
  * @access  Public
  * ***/
@@ -38,8 +38,8 @@ export const createUser = asyncMiddleware(async (req, res) => {
 });
 
 /***
- * @router  GET: api/user
- * @desc    Get logged in user
+ * @router  GET: /api/users
+ * @desc    Get logged in user profile
  * @access  Private
  * ***/
 export const getUserProfile = asyncMiddleware(async (req, res) => {
@@ -59,7 +59,7 @@ export const getUserProfile = asyncMiddleware(async (req, res) => {
 });
 
 /***
- * @router  PUT: api/user
+ * @router  PUT: /api/users/profile
  * @desc    Update user profile
  * @access  Private
  * ***/
@@ -89,8 +89,8 @@ export const updateUserProfile = asyncMiddleware(async (req, res) => {
 });
 
 /***
- * @router  GET: api/users
- * @desc    GET all users
+ * @router  GET: /api/users
+ * @desc    GET all users | Admin Users Only Can Access This Endpoint
  * @access  Private/Admin
  * ***/
 export const getUsers = asyncMiddleware(async (req, res) => {
@@ -121,7 +121,7 @@ export const deleteUser = asyncMiddleware(async (req, res) => {
  * @desc    Get User By Id
  * @access  Private/Admin
  * ***/
-export const getUsersById = asyncMiddleware(async (req, res) => {
+export const getUserById = asyncMiddleware(async (req, res) => {
   const user = await User.findById(req.params.id).select('-password');
 
   if (user) {
@@ -133,8 +133,8 @@ export const getUsersById = asyncMiddleware(async (req, res) => {
 });
 
 /***
- * @router  PUT: api/users/:id
- * @desc    Update User By Id
+ * @router  PUT: api/users/id
+ * @desc    Update User
  * @access  Private/Admin
  * ***/
 export const updateUser = asyncMiddleware(async (req, res) => {

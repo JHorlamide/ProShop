@@ -24,7 +24,7 @@ export const addOrderItem = asyncMiddleware(async (req, res) => {
   //   return res.status(400).json({ message: error.details[0].message });
   // }
 
-  /* Check to see if order items is no empty */
+  /* Check to see if order items is not empty */
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error('No Order Items');

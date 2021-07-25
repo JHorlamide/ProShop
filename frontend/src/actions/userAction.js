@@ -22,9 +22,12 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
+  ADMIN_USER_UPDATE_REQUEST,
+  ADMIN_USER_UPDATE_SUCCESS,
+  ADMIN_USER_UPDATE_FAIL,
+  ADMIN_USER_UPDATE_RESET,
 } from '../constants/userConstant';
 import { ORDER_USER_RESET } from '../constants/orderConstant';
-import { CART_RESET } from '../constants/cartConstant';
 
 /* Register action */
 export const register = (registerData) => {
@@ -78,6 +81,7 @@ export const login = (loginData) => {
 export const logoutUser = () => {
   return async (dispatch) => {
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('cartItems');
     dispatch({ type: USER_LOGOUT });
     dispatch({ type: USER_DETAILS_RESET });
     dispatch({ type: ORDER_USER_RESET });
@@ -85,8 +89,8 @@ export const logoutUser = () => {
   };
 };
 
-/*** Get User Profile ***/
-export const getUserProfile = (id) => {
+/*** Get User (ById *Profile*) ***/
+export const getUserById = (userId) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: USER_DETAILS_REQUEST });
@@ -95,7 +99,34 @@ export const getUserProfile = (id) => {
         userLogin: { userInfo },
       } = getState();
 
-      const { data } = await api.getUserProfile(id, userInfo.token);
+      const { data } = await api.getUserById(userId, userInfo.token);
+      console.log('Get User By Id from user Action:', data);
+
+      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch({
+          type: USER_DETAILS_FAIL,
+          payload: error.response.data.message,
+        });
+      }
+    }
+  };
+};
+
+/*** Get User Profile ***/
+export const getUserProfile = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: USER_DETAILS_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const { data } = await api.getUserProfile(userInfo.token);
+      console.log('From user Action:', data);
 
       dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
     } catch (error) {
@@ -184,5 +215,43 @@ export const deleteUser = (id) => {
         });
       }
     }
+  };
+};
+
+/*** Admin Update User ***/
+export const adminUpdateUser = (user) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: ADMIN_USER_UPDATE_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const { data } = await api.adminUpdateUser(
+        user._id,
+        user,
+        userInfo.token
+      );
+
+      dispatch({ type: ADMIN_USER_UPDATE_SUCCESS });
+
+      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch({
+          type: ADMIN_USER_UPDATE_FAIL,
+          payload: error.response.data.message,
+        });
+      }
+    }
+  };
+};
+
+/* Admin User Update Reset */
+export const adminUserUpdateReset = () => {
+  return async (dispatch) => {
+    dispatch({ type: ADMIN_USER_UPDATE_RESET });
   };
 };

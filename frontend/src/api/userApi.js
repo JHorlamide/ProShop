@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-/* Register user */
-export const registerUer = (loginData) => {
-  return axios.post('/api/auth/login', loginData);
+/* Register new user */
+export const register = (registerData) => {
+  return axios.post('/api/users/register', registerData);
 };
 
 /* User authentication */
@@ -10,13 +10,8 @@ export const login = (loginData) => {
   return axios.post('/api/auth/login', loginData);
 };
 
-/* Register new user */
-export const register = (registerData) => {
-  return axios.post('/api/users/register', registerData);
-};
-
-/* Get user profile */
-export const getUserProfile = (id, token) => {
+/* Get users by id | Admin Users Only*/
+export const getUserProfile= (token) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -24,7 +19,7 @@ export const getUserProfile = (id, token) => {
     },
   };
 
-  return axios.get(`/api/users/${id}`, config);
+  return axios.get(`/api/users/profile/user-profile`, config);
 };
 
 /* Update user */
@@ -37,6 +32,18 @@ export const updateUserProfile = (profileData, token) => {
   };
 
   return axios.put('/api/users/profile', profileData, config);
+};
+
+/* Get users by id | Admin Users Only*/
+export const getUserById= (userId, token) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.get(`/api/users/${userId}`, config);
 };
 
 /* Get users | Admin Users Only*/
@@ -59,4 +66,16 @@ export const deleteUser = (id, token) => {
   };
 
   return axios.delete(`/api/users/${id}`, config);
+};
+
+/*  Admin Update User */
+export const adminUpdateUser = (id, user, token) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.put(`/api/users/${id}`, user, config);
 };
