@@ -14,11 +14,12 @@ import {
   userRegisterReducer,
   userLoginReducer,
   logoutUserReducer,
-  userDetailsReducer,
+  userProfileReducer,
   userListReducer,
   userUpdateProfileReducer,
   userDeleteReducer,
   adminUserUpdateReducer,
+  userDetailsReducer,
 } from './userReducer';
 
 export default combineReducers({
@@ -34,7 +35,7 @@ export default combineReducers({
   /* User */
   userLogin: userLoginReducer,
   userLogout: logoutUserReducer,
-  userDetails: userDetailsReducer,
+  userProfile: userProfileReducer,
   userList: userListReducer,
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
@@ -42,6 +43,7 @@ export default combineReducers({
   /* Admin Only */
   userDelete: userDeleteReducer,
   adminUserUpdate: adminUserUpdateReducer,
+  userDetails: userDetailsReducer,
 
   /* Orders */
   orderCreate: orderCreateReducer,

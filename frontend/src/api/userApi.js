@@ -10,8 +10,8 @@ export const login = (loginData) => {
   return axios.post('/api/auth/login', loginData);
 };
 
-/* Get users by id | Admin Users Only*/
-export const getUserProfile= (token) => {
+/* Get user profile */
+export const getUserProfile = (token) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ export const getUserProfile= (token) => {
     },
   };
 
-  return axios.get(`/api/users/profile/user-profile`, config);
+  return axios.get('/api/users/profile', config);
 };
 
 /* Update user */
@@ -35,7 +35,7 @@ export const updateUserProfile = (profileData, token) => {
 };
 
 /* Get users by id | Admin Users Only*/
-export const getUserById= (userId, token) => {
+export const getUserDetails = (userId, token) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export const getUserById= (userId, token) => {
 };
 
 /* Get users | Admin Users Only*/
-export const userList = (token) => {
+export const getUserList = (token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

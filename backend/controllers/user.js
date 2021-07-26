@@ -93,7 +93,7 @@ export const updateUserProfile = asyncMiddleware(async (req, res) => {
  * @desc    GET all users | Admin Users Only Can Access This Endpoint
  * @access  Private/Admin
  * ***/
-export const getUsers = asyncMiddleware(async (req, res) => {
+export const adminGetUsers = asyncMiddleware(async (req, res) => {
   const users = await User.find({});
 
   res.json(users);
@@ -104,7 +104,7 @@ export const getUsers = asyncMiddleware(async (req, res) => {
  * @desc    Delete User
  * @access  Private/Admin
  * ***/
-export const deleteUser = asyncMiddleware(async (req, res) => {
+export const adminDeleteUser = asyncMiddleware(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
@@ -121,7 +121,7 @@ export const deleteUser = asyncMiddleware(async (req, res) => {
  * @desc    Get User By Id
  * @access  Private/Admin
  * ***/
-export const getUserById = asyncMiddleware(async (req, res) => {
+export const adminGetUserById = asyncMiddleware(async (req, res) => {
   const user = await User.findById(req.params.id).select('-password');
 
   if (user) {
@@ -137,7 +137,7 @@ export const getUserById = asyncMiddleware(async (req, res) => {
  * @desc    Update User
  * @access  Private/Admin
  * ***/
-export const updateUser = asyncMiddleware(async (req, res) => {
+export const adminUpdateUser = asyncMiddleware(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {

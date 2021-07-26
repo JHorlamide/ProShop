@@ -22,6 +22,9 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
+  ADMIN_USER_DETAILS_REQUEST,
+  ADMIN_USER_DETAILS_SUCCESS,
+  ADMIN_USER_DETAILS_FAIL,
   ADMIN_USER_UPDATE_REQUEST,
   ADMIN_USER_UPDATE_SUCCESS,
   ADMIN_USER_UPDATE_FAIL,
@@ -89,32 +92,6 @@ export const logoutUser = () => {
   };
 };
 
-/*** Get User (ById *Profile*) ***/
-export const getUserById = (userId) => {
-  return async (dispatch, getState) => {
-    try {
-      dispatch({ type: USER_DETAILS_REQUEST });
-
-      const {
-        userLogin: { userInfo },
-      } = getState();
-
-      const { data } = await api.getUserById(userId, userInfo.token);
-      console.log('Get User By Id from user Action:', data);
-
-      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        dispatch(setAlert(error.response.data.message, 'danger'));
-        dispatch({
-          type: USER_DETAILS_FAIL,
-          payload: error.response.data.message,
-        });
-      }
-    }
-  };
-};
-
 /*** Get User Profile ***/
 export const getUserProfile = () => {
   return async (dispatch, getState) => {
@@ -126,7 +103,7 @@ export const getUserProfile = () => {
       } = getState();
 
       const { data } = await api.getUserProfile(userInfo.token);
-      console.log('From user Action:', data);
+      console.log('Get user Profile:', data);
 
       dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
     } catch (error) {
@@ -166,32 +143,7 @@ export const updateUserProfile = (profileData) => {
   };
 };
 
-/*** Get users ***/
-export const getUserList = () => {
-  return async (dispatch, getState) => {
-    try {
-      dispatch({ type: USER_LIST_REQUEST });
-
-      const {
-        userLogin: { userInfo },
-      } = getState();
-
-      const { data } = await api.userList(userInfo.token);
-
-      dispatch({ type: USER_LIST_SUCCESS, payload: data });
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        dispatch(setAlert(error.response.data.message, 'danger'));
-        dispatch({
-          type: USER_LIST_FAIL,
-          payload: error.response.data.message,
-        });
-      }
-    }
-  };
-};
-
-/*** Get users ***/
+/*** Get User | Admin User Only ***/
 export const deleteUser = (id) => {
   return async (dispatch, getState) => {
     try {
@@ -211,6 +163,57 @@ export const deleteUser = (id) => {
         dispatch(setAlert(error.response.data.message, 'danger'));
         dispatch({
           type: USER_DELETE_FAIL,
+          payload: error.response.data.message,
+        });
+      }
+    }
+  };
+};
+
+/*** Get users | Admin User Only ***/
+export const getUserList = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: USER_LIST_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const { data } = await api.getUserList(userInfo.token);
+
+      dispatch({ type: USER_LIST_SUCCESS, payload: data });
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch({
+          type: USER_LIST_FAIL,
+          payload: error.response.data.message,
+        });
+      }
+    }
+  };
+};
+
+/*** Get User Details | Admin User Only ***/
+export const getUserDetails = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: ADMIN_USER_DETAILS_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const { data } = await api.getUserDetails(userId, userInfo.token);
+      console.log('Get user by id for admin:', data);
+
+      dispatch({ type: ADMIN_USER_DETAILS_SUCCESS, payload: data });
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch({
+          type: ADMIN_USER_DETAILS_FAIL,
           payload: error.response.data.message,
         });
       }

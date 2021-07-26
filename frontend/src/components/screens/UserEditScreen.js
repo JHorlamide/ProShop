@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 // import { setAlert } from '../../actions/alertAction';
 import {
-  getUserProfile,
-  getUserById,
+  getUserDetails,
   adminUpdateUser,
   adminUserUpdateReset,
 } from '../../actions/userAction';
@@ -35,8 +34,7 @@ const UserEditScreen = ({ match, history }) => {
       history.push('/admin/userlist');
     } else {
       if (!user.name || user._id !== userId) {
-        // dispatch(getUserProfile());
-        dispatch(getUserById(userId));
+        dispatch(getUserDetails(userId));
       } else {
         setName(user.name);
         setEmail(user.email);

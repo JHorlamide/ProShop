@@ -19,7 +19,7 @@ const ProfileScreen = ({ history }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   /* Get user and loading from state */
-  const { loading, user } = useSelector((state) => state.userDetails);
+  const { loading, user } = useSelector((state) => state.userProfile);
 
   /* Get userInfo from state */
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -33,7 +33,6 @@ const ProfileScreen = ({ history }) => {
       history.push('/login');
     } else if (!(user && user.name)) {
       dispatch(getUserProfile());
-      // dispatch(getUserProfile('profile'));
       dispatch(getUserOrder());
     } else {
       setName(user.name);

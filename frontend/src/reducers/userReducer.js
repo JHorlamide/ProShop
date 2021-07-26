@@ -20,6 +20,9 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
+  ADMIN_USER_DETAILS_REQUEST,
+  ADMIN_USER_DETAILS_SUCCESS,
+  ADMIN_USER_DETAILS_FAIL,
   ADMIN_USER_UPDATE_REQUEST,
   ADMIN_USER_UPDATE_SUCCESS,
   ADMIN_USER_UPDATE_FAIL,
@@ -74,7 +77,7 @@ export const logoutUserReducer = (state = {}, action) => {
 };
 
 /*  User Details Reducer */
-export const userDetailsReducer = (state = { user: {} }, action) => {
+export const userProfileReducer = (state = { user: {} }, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -101,6 +104,22 @@ export const userUpdateProfileReducer = (state = {}, action) => {
     case USER_UPDATE_PROFILE_SUCCESS:
       return { loading: false, success: true, userInfo: payload };
     case USER_UPDATE_PROFILE_FAIL:
+      return { loading: false, error: payload };
+    default:
+      return state;
+  }
+};
+
+/*  User Details Reducer */
+export const userDetailsReducer = (state = { user: {} }, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case ADMIN_USER_DETAILS_REQUEST:
+      return { ...state, loading: true };
+    case ADMIN_USER_DETAILS_SUCCESS:
+      return { loading: false, user: payload };
+    case ADMIN_USER_DETAILS_FAIL:
       return { loading: false, error: payload };
     default:
       return state;

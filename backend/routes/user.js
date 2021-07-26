@@ -7,17 +7,26 @@ import {
   createUser,
   getUserProfile,
   updateUserProfile,
-  getUsers,
-  deleteUser,
-  getUserById,
-  updateUser,
+  adminGetUsers,
+  adminDeleteUser,
+  adminGetUserById,
+  adminUpdateUser,
 } from '../controllers/user.js';
 
 /***
  * @router  GET: /api/users
  * @desc    GET all users | Admin Users Only Can Access This Endpoint
  * ***/
-router.get('/', [auth, admin], getUsers);
+router.get('/', [auth, admin], adminGetUsers);
+
+/***
+ * @router  GET | PUT: api/users/profile
+ * @desc    Get and Update profile my profile.
+ * ***/
+router
+  .route('/profile')
+  .get(auth, getUserProfile)
+  .put(auth, updateUserProfile);
 
 /***
  * @router  GET: api/users/id | PUT: api/users/id | DELETE: api/user/:id
@@ -25,9 +34,9 @@ router.get('/', [auth, admin], getUsers);
  * ***/
 router
   .route('/:id')
-  .get([auth, admin], getUserById)
-  .put([auth, admin], updateUser)
-  .delete([auth, admin], deleteUser);
+  .get([auth, admin], adminGetUserById)
+  .put([auth, admin], adminUpdateUser)
+  .delete([auth, admin], adminDeleteUser);
 
 /***
  * @router  GET: api/user/register
@@ -35,41 +44,4 @@ router
  * ***/
 router.post('/register', createUser);
 
-/***
- * @router  GET: api/user/profile
- * @desc    Get logged in user profile
- * ***/
-router.get('/profile/user-profile', auth, getUserProfile);
-
-/***
- * @router  PUT: api/users/profile
- * @desc    Update me profile.
- * ***/
-router.put('/profile', auth, updateUserProfile);
-
 export default router;
-
-
-
-
-
-
-
-
-
-
-
-
-// router.get('/:id', [auth, admin], getUserById);
-
-/***
- * @router  PUT: api/users/id
- * @desc    Update User By Id | Admin Users Only Can Access This Endpoint.
- * ***/
-// router.put('/:id', [auth, admin], updateUser);
-
-/***
- * @router  DELETE: api/user/:id
- * @desc    Delete user | Admin Users Only Can Access This Endpoint.
- * ***/
-// router.delete('/:id', [auth, admin], deleteUser);
