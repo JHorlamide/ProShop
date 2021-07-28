@@ -38,6 +38,7 @@ const UserListScreen = ({ history }) => {
 
   return (
     <>
+    <h2>Users</h2>
       {loading ? (
         <Loader />
       ) : (

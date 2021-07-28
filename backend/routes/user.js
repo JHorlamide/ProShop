@@ -29,7 +29,7 @@ router
   .put(auth, updateUserProfile);
 
 /***
- * @router  GET: api/users/id | PUT: api/users/id | DELETE: api/user/:id
+ * @router  GET | PUT | DELETE: api/users/id
  * @desc    Get user by Id | Update User By Id | (Delete user) => Admin Users Only Can Access This Endpoint
  * ***/
 router

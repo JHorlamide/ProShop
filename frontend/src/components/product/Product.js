@@ -3,7 +3,8 @@ import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 /* Custom Components */
-import Rating from '../../components/product/ProductRating';
+import Rating from './ProductRating';
+// import Rating from '../../components/product/ProductRating';
 
 const Products = ({ product }) => {
   return (
@@ -13,9 +14,12 @@ const Products = ({ product }) => {
         <Card.Img src={product.image} variant='top' />
       </Link>
 
+      {/* Product Name */}
       <Card.Body>
-        {/* Product Name */}
-        <Link to={`/product/${product._id}`} className='text-decoration-none text-dark'>
+        <Link
+          to={`/product/${product._id}`}
+          className='text-decoration-none text-dark'
+        >
           <Card.Title as='div' className='text-decoration-none'>
             <strong>{product.name}</strong>
           </Card.Title>
@@ -29,7 +33,7 @@ const Products = ({ product }) => {
           />
         </Card.Text>
 
-        {/* Description */}
+        {/* Price */}
         <Card.Text as='h3'>${product.price}</Card.Text>
       </Card.Body>
     </Card>

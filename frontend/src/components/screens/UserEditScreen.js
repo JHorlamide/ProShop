@@ -47,6 +47,7 @@ const UserEditScreen = ({ match, history }) => {
     e.preventDefault();
     dispatch(adminUpdateUser({ _id: user._id, name, email, isAdmin }));
   };
+
   return (
     <>
       {/* Back to prevPage */}

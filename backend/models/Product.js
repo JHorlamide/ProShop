@@ -82,4 +82,20 @@ const productSchema = new mongoose.Schema({
   },
 });
 
+/* product validation */
+export const productValidation = (product) => {
+  const schema = Joi.object({
+    name: Joi.string().min(5).max(255).required(),
+    image: Joi.string().min(5).max(255).required(),
+    description: Joi.string().min(5).max(400).required(),
+    numberInStock: Joi.number(),
+    numReviews: Joi.number(),
+    category: Joi.string().required(),
+    brand: Joi.string().required(),
+    price: Joi.number().required(),
+  });
+
+  return schema.validate(product);
+};
+
 export const Product = mongoose.model('Product', productSchema);
