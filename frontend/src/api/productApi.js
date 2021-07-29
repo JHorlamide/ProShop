@@ -3,6 +3,22 @@ import axios from 'axios';
 const url = '/api/products';
 
 /***
+ * @router  POST: /api/products
+ * @desc    Create new product
+ * @access  Private
+ * ***/
+export const createProduct = (productData, token) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.post(url, productData, config);  
+};
+
+/***
  * @router  GET: /api/products
  * @desc    Get all products
  * @access  Public

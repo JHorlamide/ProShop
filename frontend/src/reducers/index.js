@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 // Reducers
-import { productListReducer, productDeleteReducer } from './productReducer';
+import { productListReducer, productDeleteReducer, productCreateReducer } from './productReducer';
 import { cartReducer } from './cartReducer';
 import { alertReducer } from './alertReducer';
 import {
@@ -26,6 +26,7 @@ export default combineReducers({
   /* Products */
   productList: productListReducer,
   productDelete: productDeleteReducer,
+  productCreate: productCreateReducer,
 
   /* Alert */
   alert: alertReducer,

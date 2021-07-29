@@ -7,20 +7,21 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAILED,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_CREATE_FAILED,
 } from '../constants/productConstant';
 
 export const getProducts = (source) => {
   return async (dispatch) => {
     try {
       const { data } = await api.getProducts(source);
-      console.log('products', data);
       dispatch({
         type: GET_PRODUCTS,
         payload: data,
       });
     } catch (error) {
       if (error.response && error.response.data.message) {
-        console.log('Error from product action:', error.response);
         dispatch(setAlert(error.response.data.message, 'danger'));
         dispatch({
           type: PRODUCT_FAIL,
@@ -67,9 +68,10 @@ export const deleteProduct = (productId) => {
       const {
         userLogin: { userInfo },
       } = getState();
+
       const { data } = await api.deleteProduct(productId, userInfo.token);
 
-      dispatch({type: PRODUCT_DELETE_SUCCESS});
+      dispatch({ type: PRODUCT_DELETE_SUCCESS });
 
       dispatch(setAlert(data.message, 'success'));
     } catch (error) {
@@ -78,6 +80,33 @@ export const deleteProduct = (productId) => {
         dispatch(setAlert(error.response.data.message, 'danger'));
         dispatch({
           type: PRODUCT_DELETE_FAILED,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    }
+  };
+};
+
+export const createProduct = (productDate) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: PRODUCT_CREATE_REQUEST });
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const { data } = await api.createProduct(productDate, userInfo.token);
+
+      dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        console.log('Error from product action:', error.response);
+        dispatch(setAlert(error.response.data.message, 'danger'));
+        dispatch({
+          type: PRODUCT_CREATE_FAILED,
           payload:
             error.response && error.response.data.message
               ? error.response.data.message

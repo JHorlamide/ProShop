@@ -38,7 +38,7 @@ export const createUser = asyncMiddleware(async (req, res) => {
 });
 
 /***
- * @router  GET: /api/users
+ * @router  GET: /api/users/profile
  * @desc    Get logged in user profile
  * @access  Private
  * ***/

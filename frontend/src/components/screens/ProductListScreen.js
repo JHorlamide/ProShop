@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button, Table, Row, Col } from 'react-bootstrap';
-import { getProducts, deleteProduct } from '../../actions/productAction';
+import {
+  getProducts,
+  deleteProduct,
+  createProduct,
+} from '../../actions/productAction';
+import { PRODUCT_CREATE_RESET } from '../../constants/productConstant';
 import axios from 'axios';
 
 /* Custom Component */
@@ -15,16 +20,31 @@ const ProductListScreen = ({ history }) => {
   const productList = useSelector((state) => state.productList);
   const { loading, products } = productList;
 
-  /* Get product from productList state */
+  /* productDelete state */
   const productDelete = useSelector((state) => state.productDelete);
-  const { loading: loadingUpdate, success: successDelete } = productDelete;
+  const { loading: loadingDelete, success: successDelete } = productDelete;
+
+  const productCreate = useSelector((state) => state.productCreate);
+  const {
+    success: successCreate,
+    loading: loadingCreate,
+    product: createdProduct,
+  } = productCreate;
 
   /* Get users from userList state */
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
+    dispatch({ type: PRODUCT_CREATE_RESET });
+
+    if (!userInfo.isAdmin) {
+      history.push('/login');
+    }
+
+    if (successCreate) {
+      history.push(`/admin/product/${createdProduct._id}/edit`);
+    } else {
       const source = axios.CancelToken.source();
 
       dispatch(getProducts(source));
@@ -32,13 +52,18 @@ const ProductListScreen = ({ history }) => {
       return () => {
         source.cancel('Request Cancelled.');
       };
-    } else {
-      history.push('/login');
     }
-  }, [dispatch, history, userInfo, successDelete]);
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    successDelete,
+    createdProduct,
+    successCreate,
+  ]);
 
   const createProductHandler = () => {
-    console.log('Product created');
+    history.push('/admin/create-product')
   };
 
   const handleProductDelete = (productId) => {
@@ -59,7 +84,11 @@ const ProductListScreen = ({ history }) => {
           </Button>
         </Col>
       </Row>
-      {loadingUpdate && <Loader />}
+
+      {loadingDelete && <Loader />}
+
+      {loadingCreate && <Loader />}
+
       {loading ? (
         <Loader />
       ) : (

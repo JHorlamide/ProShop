@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAlert } from '../../actions/alertAction';
 import { getUserProfile, updateUserProfile } from '../../actions/userAction';
 import { getUserOrder } from '../../actions/orderAction';
+import {USER_UPDATE_PROFILE_RESET} from '../../constants/userConstant'
 
 /* Custom Component */
 import Loader from '../layouts/Loader';
@@ -11,7 +12,7 @@ import Loader from '../layouts/Loader';
 import { Form, Button, Row, Col, Table } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const ProfileScreen = ({ history }) => {
+const ProfileScreen = ({ history, match }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,6 +24,7 @@ const ProfileScreen = ({ history }) => {
 
   /* Get userInfo from state */
   const { userInfo } = useSelector((state) => state.userLogin);
+  const { success } = useSelector((state) => state.userUpdateProfile);
 
   /* Get user order from state */
   const userOrder = useSelector((state) => state.userOrder);
@@ -31,14 +33,15 @@ const ProfileScreen = ({ history }) => {
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
-    } else if (!(user && user.name)) {
+    } else if (!user || !user.name || success) {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
       dispatch(getUserProfile());
       dispatch(getUserOrder());
     } else {
-      setName(user.name);
-      setEmail(user.email);
+      setName(user && user.name);
+      setEmail(user && user.email);
     }
-  }, [dispatch, history, userInfo, user]);
+  }, [dispatch, history, userInfo, user, success]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,7 +49,7 @@ const ProfileScreen = ({ history }) => {
     if (password !== confirmPassword) {
       return dispatch(setAlert('Passwords do not match', 'info'));
     } else {
-      dispatch(updateUserProfile({ _id: user._id, name, email, password }));
+      dispatch(updateUserProfile({ _id: user && user._id, name, email, password }));
       dispatch(setAlert('Profile updated', 'success'));
     }
   };
@@ -64,7 +67,7 @@ const ProfileScreen = ({ history }) => {
             <Form.Control
               type='text'
               name='name'
-              value={name}
+              value={name && name}
               placeholder='Enter Name'
               onChange={(e) => setName(e.target.value)}
             ></Form.Control>
@@ -76,7 +79,7 @@ const ProfileScreen = ({ history }) => {
             <Form.Control
               type='email'
               name='email'
-              value={email}
+              value={email && email}
               placeholder='Enter Email'
               onChange={(e) => setEmail(e.target.value)}
             ></Form.Control>
@@ -88,7 +91,7 @@ const ProfileScreen = ({ history }) => {
             <Form.Control
               type='password'
               name='password'
-              value={password}
+              value={password && password}
               placeholder='Enter Password'
               onChange={(e) => setPassword(e.target.value)}
             ></Form.Control>
@@ -135,8 +138,8 @@ const ProfileScreen = ({ history }) => {
               {orders &&
                 orders.map((order) => {
                   return (
-                    <tr key={order._id}>
-                      <td>{order._id}</td>
+                    <tr key={order && order._id}>
+                      <td>{order && order._id}</td>
                       <td>{order.createdAt.substring(0, 10)}</td>
                       <td>{order.totalPrice}</td>
                       <td>
@@ -160,7 +163,7 @@ const ProfileScreen = ({ history }) => {
                         )}
                       </td>
                       <td>
-                        <LinkContainer to={`/order/${order._id}`}>
+                        <LinkContainer to={`/order/${order && order._id}`}>
                           <Button className='btn-sm' variant>
                             Details
                           </Button>

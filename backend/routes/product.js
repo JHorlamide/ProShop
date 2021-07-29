@@ -16,7 +16,10 @@ import {
  * @router  GET | POST: api/products
  * @desc    Get all products | Create new product.
  * ***/
-router.route('/').get(getProducts).post([auth, admin], createProduct);
+router
+  .route('/')
+  .get(getProducts)
+  .post([auth, admin], createProduct);
 
 /***
  * @router  GET | DELETE | PUT: api/products/:id
