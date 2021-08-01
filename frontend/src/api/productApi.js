@@ -8,14 +8,14 @@ const url = '/api/products';
  * @access  Private
  * ***/
 export const createProduct = (productData, token) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  };
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	};
 
-  return axios.post(url, productData, config);  
+	return axios.post(url, productData, config);
 };
 
 /***
@@ -24,17 +24,16 @@ export const createProduct = (productData, token) => {
  * @access  Public
  * ***/
 export const getProducts = (source) => {
-  try {
-    return axios.get(url, {
-      cancelToken: source.token,
-    });
-
-  } catch (error) {
-    if (axios.isCancel(error)) {
-      console.log(`Error from api ${error.message}`);
-    }
-    return error;
-  }
+	try {
+		return axios.get(url, {
+			cancelToken: source.token,
+		});
+	} catch (error) {
+		if (axios.isCancel(error)) {
+			console.log(`Error from api ${error.message}`);
+		}
+		return error;
+	}
 };
 
 /***
@@ -43,16 +42,16 @@ export const getProducts = (source) => {
  * @access  Public
  * ***/
 export const getProduct = (productId, source) => {
-  try {
-    return axios.get(`${url}/${productId}`, {
-      cancelToken: source.token,
-    });
-  } catch (error) {
-    if (axios.isCancel(error)) {
-      console.log(`Error from api${error.message}`);
-    }
-    return error;
-  }
+	try {
+		return axios.get(`${url}/${productId}`, {
+			cancelToken: source.token,
+		});
+	} catch (error) {
+		if (axios.isCancel(error)) {
+			console.log(`Error from api${error.message}`);
+		}
+		return error;
+	}
 };
 
 /***
@@ -61,12 +60,28 @@ export const getProduct = (productId, source) => {
  * @access  Private | Admin Users Only
  * ***/
 export const deleteProduct = (productId, token) => {
-   const config = {
-     headers: {
-       'Content-Type': 'application/json',
-       Authorization: `Bearer ${token}`,
-     },
-   };
-   
-  return axios.delete(`${url}/${productId}`, config)  
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	};
+
+	return axios.delete(`${url}/${productId}`, config);
+};
+
+/***
+ * @router  PUT: api/product/:id
+ * @desc    Get single product
+ * @access  Private | Admin Users Only
+ * ***/
+export const updateProduct = (productData, productId, token) => {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	};
+
+	return axios.put(`${url}/${productId}`, productData, config);
 };

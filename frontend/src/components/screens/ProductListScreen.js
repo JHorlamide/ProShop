@@ -5,7 +5,6 @@ import { Button, Table, Row, Col } from 'react-bootstrap';
 import {
   getProducts,
   deleteProduct,
-  createProduct,
 } from '../../actions/productAction';
 import { PRODUCT_CREATE_RESET } from '../../constants/productConstant';
 import axios from 'axios';

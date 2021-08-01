@@ -59,6 +59,7 @@ export const updateProduct = asyncMiddleware(async (req, res) => {
 	}
 
 	if (product) {
+		product._id = req.body._id;
 		product.name = req.body.name;
 		product.image = req.body.image;
 		product.price = req.body.price;

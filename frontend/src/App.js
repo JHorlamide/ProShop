@@ -15,6 +15,7 @@ import UserListScreen from './components/screens/UserListScreen';
 import ProductListScreen from './components/screens/ProductListScreen';
 import UserEditScreen from './components/screens/UserEditScreen';
 import CreateProductScreen from './components/screens/CreateProductScreen';
+import ProductEditScreen from './components/screens/ProductEditScreen';
 import ProductScreen from './components/screens/ProductDetailsScreen';
 
 /* React Bootstrap */
@@ -31,16 +32,45 @@ function App() {
 					<Route exact path='/login' component={LoginScreen} />
 					<Route exact path='/register' component={RegisterScreen} />
 					<Route exact path='/profile' component={ProfileScreen} />
-					<Route exact path='/product/:id' component={ProductScreen} />
+					<Route
+						exact
+						path='/product/:id'
+						component={ProductScreen}
+					/>
 					<Route exact path='/cart/:id?' component={CartScreen} />
 					<Route exact path='/shipping' component={ShippingScreen} />
 					<Route exact path='/payment' component={PaymentScreen} />
-					<Route exact path='/placeorder' component={PlaceOrderScreen} />
+					<Route
+						exact
+						path='/placeorder'
+						component={PlaceOrderScreen}
+					/>
 					<Route exact path='/order/:id' component={OrderScreen} />
-					<Route exact path='/admin/userlist' component={UserListScreen} />
-					<Route exact path='/admin/create-product' component={CreateProductScreen} />
-					<Route exact path='/admin/productlist' component={ProductListScreen}/>
-					<Route exact path='/admin/user/:id/edit' component={UserEditScreen}/>
+					<Route
+						exact
+						path='/admin/userlist'
+						component={UserListScreen}
+					/>
+					<Route
+						exact
+						path='/admin/create-product'
+						component={CreateProductScreen}
+					/>
+					<Route
+						exact
+						path='/admin/productlist'
+						component={ProductListScreen}
+					/>
+					<Route
+						exact
+						path='/admin/user/:id/edit'
+						component={UserEditScreen}
+					/>
+					<Route
+						exact
+						path='/admin/product/:id/edit'
+						component={ProductEditScreen}
+					/>
 					<Route exact path='/' component={HomeScreen} />
 				</Container>
 			</main>
