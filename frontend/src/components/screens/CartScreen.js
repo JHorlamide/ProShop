@@ -15,21 +15,17 @@ import axios from 'axios';
 
 const CartScreen = ({ match, location, history }) => {
 	const dispatch = useDispatch();
-
 	const productId = match.params.id;
 	const qty = location.search ? Number(location.search.split('=')[1]) : 1;
 
 	/* Get cart state */
-	const cart = useSelector((state) => {
-		return state.cart;
-	});
+	const cart = useSelector((state) => state.cart);
 
 	/* Get cartItems from  cart */
 	const { cartItems } = cart;
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
-
 		if (productId) dispatch(addToCart(productId, qty, source));
 
 		return () => {
@@ -61,12 +57,7 @@ const CartScreen = ({ match, location, history }) => {
 									<Row>
 										{/* Product Image */}
 										<Col md={2}>
-											<Image
-												src={item.image}
-												alt={item.name}
-												fluid
-												rounded
-											/>
+											<Image src={item.image} alt={item.name} fluid rounded />
 										</Col>
 
 										{/* Product Name */}
@@ -89,24 +80,19 @@ const CartScreen = ({ match, location, history }) => {
 												value={item.qty}
 												onChange={(e) =>
 													dispatch(
-														addToCart(
-															item.product,
-															Number(e.target.value)
-														)
+														addToCart(item.product, Number(e.target.value))
 													)
 												}
 											>
-												{[...Array(item.numberInStock).keys()].map(
-													(key) => (
-														<option
-															className='dropdown-item'
-															key={key + 1}
-															value={key + 1}
-														>
-															{key + 1}
-														</option>
-													)
-												)}
+												{[...Array(item.numberInStock).keys()].map((key) => (
+													<option
+														className='dropdown-item'
+														key={key + 1}
+														value={key + 1}
+													>
+														{key + 1}
+													</option>
+												))}
 											</Form.Control>
 										</Col>
 
@@ -115,9 +101,7 @@ const CartScreen = ({ match, location, history }) => {
 											<Button
 												type='button'
 												variant='secondary'
-												onClick={() =>
-													removeFromCartHandler(item.product)
-												}
+												onClick={() => removeFromCartHandler(item.product)}
 											>
 												<i className='fas fa-trash'></i>
 											</Button>
@@ -134,8 +118,7 @@ const CartScreen = ({ match, location, history }) => {
 					<ListGroup>
 						<ListGroup.Item>
 							<h2 className='text-uppercase'>
-								Subtotal (
-								{cartItems.reduce((acc, item) => acc + item.qty, 0)})
+								Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
 								item
 							</h2>
 							$

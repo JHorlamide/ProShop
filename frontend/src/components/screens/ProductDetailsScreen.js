@@ -25,7 +25,6 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     const source = axios.CancelToken.source();
-
     dispatch(getProduct(match.params.id, source));
 
     return () => {
