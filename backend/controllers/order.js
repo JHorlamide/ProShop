@@ -3,9 +3,8 @@ import { Order } from '../models/Order.js';
 // import { orderItemsValidation } from '../models/Order.js';
 
 /***
- * @router  POST: api/order
- * @desc    Create new orders
- * @access  Private
+ * @router  POST: api/orders
+ * @desc    Create new order.
  * ***/
 export const addOrderItem = asyncMiddleware(async (req, res) => {
   const {
@@ -66,7 +65,7 @@ export const getOrderById = asyncMiddleware(async (req, res) => {
 });
 
 /***
- * @router  PUT: api/orders/id/pay
+ * @router  PUT: api/orders/:id/pay
  * @desc    Update order to paid
  * @access  Private
  * ***/

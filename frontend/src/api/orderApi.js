@@ -37,7 +37,7 @@ export const payOrder = (orderId, token, paymentResult) => {
   return axios.put(`${url}/${orderId}/pay`, paymentResult, config);
 };
 
-/* Pay Order */
+/* User Order*/
 export const getUserOrder = (token) => {
   const config = {
     headers: {

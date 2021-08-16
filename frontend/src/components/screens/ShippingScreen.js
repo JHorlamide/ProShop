@@ -31,9 +31,11 @@ const ShippingScreen = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    
     if (!(address || city || country || postalCode)) {
       return dispatch(setAlert('Please provide the shipping data', 'info'));
     }
+
     dispatch(saveShippingAddress(shippingData));
     history.push('/payment');
   };

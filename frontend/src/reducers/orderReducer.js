@@ -50,7 +50,7 @@ export const orderDetailsReducer = (
   }
 };
 
-/* Order details */
+/* Order Pay */
 export const orderPayReducer = (state = {}, action) => {
   const { type, payload } = action;
 
