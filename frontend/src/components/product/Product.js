@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 /* Custom Components */
 import Rating from './ProductRating';
-// import Rating from '../../components/product/ProductRating';
 
 const Products = ({ product }) => {
   return (

@@ -13,13 +13,20 @@ import {
 	PRODUCT_UPDATE_REQUEST,
 	PRODUCT_UPDATE_SUCCESS,
 	PRODUCT_UPDATE_FAILED,
+	PRODUCT_CREATE_REVIEW_REQUEST,
+	PRODUCT_CREATE_REVIEW_SUCCESS,
+	PRODUCT_CREATE_REVIEW_FAILED,
+	PRODUCT_CREATE_REVIEW_RESET,
+	TOP_RATED_PRODUCT_REQUEST,
+	TOP_RATED_PRODUCT_SUCCESS,
+	TOP_RATED_PRODUCT_FAILED,
 } from '../constants/productConstant';
 
 /* Get all products */
-export const getProducts = (source) => {
+export const getProducts = (source, searchKeyWord = '', pageNumber = '') => {
 	return async (dispatch) => {
 		try {
-			const { data } = await api.getProducts(source);
+			const { data } = await api.getProducts(source, searchKeyWord, pageNumber);
 			dispatch({
 				type: GET_PRODUCTS,
 				payload: data,
@@ -29,6 +36,29 @@ export const getProducts = (source) => {
 				dispatch(setAlert(error.response.data.message, 'danger'));
 				dispatch({
 					type: PRODUCT_FAIL,
+					payload:
+						error.response && error.response.data.message
+							? error.response.data.message
+							: error.message,
+				});
+			}
+		}
+	};
+};
+
+/* Get top rated product */
+export const getTopRatedProducts = (source) => {
+	return async (dispatch) => {
+		try {
+			dispatch({ type: TOP_RATED_PRODUCT_REQUEST });
+
+			const { data } = await api.getTopRatedProduct(source);
+			dispatch({ type: TOP_RATED_PRODUCT_SUCCESS, payload: data });
+		} catch (error) {
+			if (error.response && error.response.data.message) {
+				dispatch(setAlert(error.response.data.message, 'danger'));
+				dispatch({
+					type: TOP_RATED_PRODUCT_FAILED,
 					payload:
 						error.response && error.response.data.message
 							? error.response.data.message
@@ -104,10 +134,7 @@ export const createProduct = (productDate) => {
 				userLogin: { userInfo },
 			} = getState();
 
-			const { data } = await api.createProduct(
-				productDate,
-				userInfo.token
-			);
+			const { data } = await api.createProduct(productDate, userInfo.token);
 
 			dispatch({ type: PRODUCT_CREATE_SUCCESS, product: data });
 		} catch (error) {
@@ -126,6 +153,43 @@ export const createProduct = (productDate) => {
 	};
 };
 
+/* Create Product Review */
+export const createProductReview = (productId, reviewDate) => {
+	return async (dispatch, getState) => {
+		try {
+			dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
+
+			const {
+				userLogin: { userInfo },
+			} = getState();
+
+			await api.createProductReview(productId, reviewDate, userInfo.token);
+
+			dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS });
+		} catch (error) {
+			if (error.response && error.response.data.message) {
+				console.log('Error from product action:', error.response);
+				dispatch(setAlert(error.response.data.message, 'danger'));
+				dispatch({
+					type: PRODUCT_CREATE_REVIEW_FAILED,
+					payload:
+						error.response && error.response.data.message
+							? error.response.data.message
+							: error.message,
+				});
+			}
+		}
+	};
+};
+
+/* Create product review reset */
+export const productReviewReset = () => {
+	return async (dispatch) =>
+		dispatch({
+			type: PRODUCT_CREATE_REVIEW_RESET,
+		});
+};
+
 /* Update product | Admin User Only */
 export const updateProduct = (productData, productId) => {
 	return async (dispatch, getState) => {
@@ -136,15 +200,11 @@ export const updateProduct = (productData, productId) => {
 				userLogin: { userInfo },
 			} = getState();
 
-			const { data } = await api.updateProduct(
-				productData,
-				productId,
-				userInfo.token
-			);
+			await api.updateProduct(productData, productId, userInfo.token);
 
 			dispatch({ type: PRODUCT_UPDATE_SUCCESS });
 
-			dispatch(setAlert(data.message, 'success'));
+			dispatch(setAlert('Product Updated successfully', 'success'));
 		} catch (error) {
 			if (error.response && error.response.data.message) {
 				dispatch(setAlert(error.response.data.message, 'danger'));

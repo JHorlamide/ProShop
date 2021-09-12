@@ -1,10 +1,12 @@
 import express from 'express';
+import path from 'path';
 
 /* Routes */
 import userRoute from '../routes/user.js';
 import productRoute from '../routes/product.js';
 import authRoute from '../routes/auth.js';
 import orderRoute from '../routes/order.js';
+import fileUploads from '../routes/uploadRoutes.js';
 
 /* Middleware */
 import {
@@ -15,13 +17,15 @@ import {
 
 const route = (app) => {
   app.use(express.json());
+  const __dirname = path.resolve();
 
   app.use('/api/products', productRoute);
   app.use('/api/users', userRoute);
   app.use('/api/auth', authRoute);
   app.use('/api/orders', orderRoute);
+  app.use('/api/uploads', fileUploads)
 
-  /* Send PayPal clientId to Client */ 
+  /* Send PayPal clientId to Client */
   app.get('/api/config/paypal', (req, res) =>
     res.send(process.env.PAYPAL_CLIENT_ID)
   );
@@ -29,6 +33,7 @@ const route = (app) => {
   app.use(notFound);
   app.use(errorHandler);
   app.use(objectIdErrorHandler);
+  app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 };
 
 export default route;

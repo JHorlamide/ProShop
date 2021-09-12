@@ -1,50 +1,62 @@
 import React, { Fragment, useEffect } from 'react';
 import axios from 'axios';
+import { Row, Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts } from '../../actions/productAction';
 
 /* Custom Component */
 import Products from '../product/Product';
+import ProductCarousel from '../layouts/ProductCarousel';
 import Loader from '../../components/layouts/Loader';
-/* React Bootstrap Component */
-import { Row, Col } from 'react-bootstrap';
+import Paginate from '../layouts/Paginate';
 
-const HomeScreen = () => {
-  const dispatch = useDispatch();
+const HomeScreen = ({ match }) => {
+	const searchKeyWord = match.params.searchKeyWord;
 
-  const { products, loading, error } = useSelector(
-    (state) => state.productList
-  );
+	const pageNum = match.params.pageNumber;
 
+	const dispatch = useDispatch();
 
-  useEffect(() => {
-    const source = axios.CancelToken.source();
+	const { products, loading, error, pages, pageNumber } = useSelector(
+		(state) => state.productList
+	);
 
-    dispatch(getProducts(source));
+	useEffect(() => {
+		const source = axios.CancelToken.source();
 
-    return () => {
-      return source.cancel('Request canceled');
-    };
-  }, [dispatch]);
+		dispatch(getProducts(source, searchKeyWord, pageNum));
 
-  return (
-    <Fragment>
-      <h1>Latest Products</h1>
-      {loading && error ? (
-        <Loader />
-      ) : (
-        <Row>
-          {products.map((product) => {
-            return (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Products product={product} />
-              </Col>
-            );
-          })}
-        </Row>
-      )}
-    </Fragment>
-  );
+		return () => {
+			return source.cancel('Request canceled');
+		};
+	}, [dispatch, searchKeyWord, pageNum]);
+
+	return (
+		<Fragment>
+			{!searchKeyWord && <ProductCarousel />}
+			<h1>Latest Products</h1>
+			{loading && error ? (
+				<Loader />
+			) : (
+				<>
+					<Row>
+						{products.map((product) => {
+							return (
+								<Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+									<Products product={product} />
+								</Col>
+							);
+						})}
+					</Row>
+					<Paginate
+						pages={pages}
+						pageNumber={pageNumber}
+						searchKeyWord={searchKeyWord}
+					/>
+				</>
+			)}
+		</Fragment>
+	);
 };
 
 export default HomeScreen;

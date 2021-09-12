@@ -4,6 +4,12 @@ import Joi from 'joi';
 /* Review Schema */
 const reviewSchema = new mongoose.Schema(
 	{
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'User',
+		},
+
 		name: {
 			type: String,
 			required: true,
@@ -97,6 +103,16 @@ export const productValidation = (product) => {
 	});
 
 	return schema.validate(product);
+};
+
+/* product validation */
+export const validateReview = (review) => {
+	const schema = Joi.object({
+		rating: Joi.number().required(),
+		comment: Joi.string().required(),
+	});
+
+	return schema.validate(review);
 };
 
 export const Product = mongoose.model('Product', productSchema);

@@ -1,56 +1,71 @@
 import { combineReducers } from 'redux';
-
-// Reducers
-import { productListReducer, productDeleteReducer, productCreateReducer, productUpdateReducer } from './productReducer';
 import { cartReducer } from './cartReducer';
 import { alertReducer } from './alertReducer';
+
+// Reducers
 import {
-  orderCreateReducer,
-  orderDetailsReducer,
-  orderPayReducer,
-  userOrderReducer,
+	productListReducer,
+	productDeleteReducer,
+	productCreateReducer,
+	productUpdateReducer,
+	productCreateReviewReducer,
+	topRatedProductReducer,
+} from './productReducer';
+
+import {
+	orderCreateReducer,
+	orderDetailsReducer,
+	orderDeliveredReducer,
+	orderPayReducer,
+	userOrderReducer,
+	orderListReducer,
 } from './orderReducer';
+
 import {
-  userRegisterReducer,
-  userLoginReducer,
-  logoutUserReducer,
-  userProfileReducer,
-  userListReducer,
-  userUpdateProfileReducer,
-  userDeleteReducer,
-  adminUserUpdateReducer,
-  userDetailsReducer,
+	userRegisterReducer,
+	userLoginReducer,
+	logoutUserReducer,
+	userProfileReducer,
+	userListReducer,
+	userUpdateProfileReducer,
+	userDeleteReducer,
+	adminUserUpdateReducer,
+	userDetailsReducer,
 } from './userReducer';
 
 export default combineReducers({
-  /* Products */
-  productList: productListReducer,
-  productDelete: productDeleteReducer,
-  productCreate: productCreateReducer,
-  productUpdate: productUpdateReducer,
+	/* Products */
+	productList: productListReducer,
+	productDelete: productDeleteReducer,
+	productCreate: productCreateReducer,
+	productUpdate: productUpdateReducer,
+	productCreateReview: productCreateReviewReducer,
+	topRatedProducts: topRatedProductReducer,
 
-  /* Alert */
-  alert: alertReducer,
+	/* User */
+	userLogin: userLoginReducer,
+	userLogout: logoutUserReducer,
+	userProfile: userProfileReducer,
+	userList: userListReducer,
+	userRegister: userRegisterReducer,
+	userUpdateProfile: userUpdateProfileReducer,
 
-  /* Cart */
-  cart: cartReducer,
+	/* Admin Only */
+	userDelete: userDeleteReducer,
+	adminUserUpdate: adminUserUpdateReducer,
+	userDetails: userDetailsReducer,
 
-  /* User */
-  userLogin: userLoginReducer,
-  userLogout: logoutUserReducer,
-  userProfile: userProfileReducer,
-  userList: userListReducer,
-  userRegister: userRegisterReducer,
-  userUpdateProfile: userUpdateProfileReducer,
+	/* Orders */
+	orderList: orderListReducer,
+	orderCreate: orderCreateReducer,
+	orderDetails: orderDetailsReducer,
+	orderPay: orderPayReducer,
+	orderDelivered: orderDeliveredReducer,
+	userOrder: userOrderReducer,
+	
+	/* Alert */
+	alert: alertReducer,
 
-  /* Admin Only */
-  userDelete: userDeleteReducer,
-  adminUserUpdate: adminUserUpdateReducer,
-  userDetails: userDetailsReducer,
-
-  /* Orders */
-  orderCreate: orderCreateReducer,
-  orderDetails: orderDetailsReducer,
-  orderPay: orderPayReducer,
-  userOrder: userOrderReducer,
+	/* Cart */
+	cart: cartReducer,
 });

@@ -19,15 +19,52 @@ export const createProduct = (productData, token) => {
 };
 
 /***
+ * @router  POST: /api/products/:id/reviews
+ * @desc    Create product reviews
+ * @access  Private
+ * ***/
+export const createProductReview = (productId, reviewData, token) => {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	};
+
+	return axios.post(`${url}/${productId}/reviews`, reviewData, config);
+};
+
+/***
+ * @router  GET: /api/products/top
+ * @desc   	Get top rated product
+ * @access  Public
+ * ***/
+export const getTopRatedProduct = (source) => {
+	try {
+		return axios.get(`${url}/top`, {
+			cancelToken: source.token,
+		});
+	} catch (error) {
+		if (axios.isCancel(error)) {
+			console.log(`Error from api ${error.message}`);
+		}
+		return error;
+	}
+};
+
+/***
  * @router  GET: /api/products
  * @desc    Get all products
  * @access  Public
  * ***/
-export const getProducts = (source) => {
+export const getProducts = (source, searchKeyWord, pageNumber) => {
 	try {
-		return axios.get(url, {
-			cancelToken: source.token,
-		});
+		return axios.get(
+			`${url}?searchKeyWord=${searchKeyWord}&pageNumber=${pageNumber}`,
+			{
+				cancelToken: source.token,
+			}
+		);
 	} catch (error) {
 		if (axios.isCancel(error)) {
 			console.log(`Error from api ${error.message}`);
