@@ -21,6 +21,7 @@ import {
 /* Custom Component */
 import Rating from '../../components/product/ProductRating';
 import Loader from '../../components/layouts/Loader';
+import Meta from '../../components/layouts/Meta';
 
 const ProductScreen = ({ history, match }) => {
 	const productId = match.params.id;
@@ -75,6 +76,7 @@ const ProductScreen = ({ history, match }) => {
 				<Loader />
 			) : (
 				<>
+					<Meta title={product.name} />
 					<Row>
 						{/* Image */}
 						<Col md={6}>

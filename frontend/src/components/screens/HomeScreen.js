@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Row, Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,6 +10,7 @@ import Products from '../product/Product';
 import ProductCarousel from '../layouts/ProductCarousel';
 import Loader from '../../components/layouts/Loader';
 import Paginate from '../layouts/Paginate';
+import Meta from '../layouts/Meta';
 
 const HomeScreen = ({ match }) => {
 	const searchKeyWord = match.params.searchKeyWord;
@@ -33,7 +35,14 @@ const HomeScreen = ({ match }) => {
 
 	return (
 		<Fragment>
-			{!searchKeyWord && <ProductCarousel />}
+			<Meta />
+			{!searchKeyWord ? (
+				<ProductCarousel />
+			) : (
+				<Link className='btn btn-light' to=''>
+					Go Back
+				</Link>
+			)}
 			<h1>Latest Products</h1>
 			{loading && error ? (
 				<Loader />
