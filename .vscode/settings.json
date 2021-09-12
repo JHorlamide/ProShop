@@ -1,7 +1,0 @@
-{
-	"pugFormatter.tabSize": 4,
-	"editor.tabSize": 3,
-	"editor.autoIndent": "advanced",
-	"html-fmt-vscode.indentSize": 5,
-	"cSpell.words": ["fieldname", "originalname", "postbuild"]
-}
