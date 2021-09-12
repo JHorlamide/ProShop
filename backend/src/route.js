@@ -10,31 +10,49 @@ import fileUploads from '../routes/uploadRoutes.js';
 
 /* Middleware */
 import {
-  objectIdErrorHandler,
-  errorHandler,
-  notFound,
+	objectIdErrorHandler,
+	errorHandler,
+	notFound,
 } from '../middlewares/error_handler.js';
 
 const route = (app) => {
-  app.use(express.json());
+	app.use(express.json());
 
-  app.use('/api/products', productRoute);
-  app.use('/api/users', userRoute);
-  app.use('/api/auth', authRoute);
-  app.use('/api/orders', orderRoute);
-  app.use('/api/uploads', fileUploads)
+	app.use('/api/products', productRoute);
+	app.use('/api/users', userRoute);
+	app.use('/api/auth', authRoute);
+	app.use('/api/orders', orderRoute);
+	app.use('/api/uploads', fileUploads);
 
-  /* Send PayPal clientId to Client */
-  app.get('/api/config/paypal', (req, res) =>
-    res.send(process.env.PAYPAL_CLIENT_ID)
-  );
+	/* Send PayPal clientId to Client */
+	app.get('/api/config/paypal', (req, res) =>
+		res.send(process.env.PAYPAL_CLIENT_ID)
+	);
 
-  const __dirname = path.resolve();
-  app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+	/* File upload config */
+	const __dirname = path.resolve();
+	app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-  app.use(notFound);
-  app.use(errorHandler);
-  app.use(objectIdErrorHandler);
+	/* App deployment config */
+	if (process.env.NODE_ENV === 'production') {
+		app.use(express.static(path.join(__dirname, '../../frontend/build')));
+
+		app.use('*', (req, res) => {
+			return res.sendFile(
+				// path.resolve(__dirname, '/frontend', 'build', 'index.html')
+				path.resolve(__dirname, '../../frontend/build/index.html')
+			);
+		});
+	} else {
+		app.get('/', (req, res) => {
+			res.send('API running...');
+		});
+	}
+
+	/* Error handling */
+	app.use(notFound);
+	app.use(errorHandler);
+	app.use(objectIdErrorHandler);
 };
 
 export default route;
