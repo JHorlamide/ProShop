@@ -15,7 +15,7 @@
 		"dev": "concurrently \"npm run server \" \"npm run client\"",
 		"data:import": "node seeder.js",
 		"data:destroy": "node seeder.js -d",
-		"heroku-postbuild": "cd frontend && npm install && npm run build"
+		"heroku-postbuild": "NMP_CONFIG_PRODUCTION=false npm install --prefix ../frontend && npm run build --prefix ../frontend"
 	},
 	"author": "JHorlamide",
 	"license": "ISC",
