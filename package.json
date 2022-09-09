@@ -9,10 +9,10 @@
 		"npm": "7.22.0"
 	},
 	"scripts": {
-		"start": "node server.js",
+		"start": "concurrently \"npm run server \" \"npm run client\"",
+		"start:node": "node server.js",
 		"server": "nodemon server.js",
-		"client": "npm start --prefix ../frontend/",
-		"dev": "concurrently \"npm run server \" \"npm run client\"",
+		"client": "npm start --prefix ./frontend/",
 		"data:import": "node seeder.js",
 		"data:destroy": "node seeder.js -d",
 		"heroku-postbuild": "NMP_CONFIG_PRODUCTION=false npm install --prefix ../frontend && npm run build --prefix ../frontend"
