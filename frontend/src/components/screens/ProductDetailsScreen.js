@@ -47,12 +47,14 @@ const ProductScreen = ({ history, match }) => {
 			setComment('');
 			dispatch(productReviewReset());
 		}
+
 		const source = axios.CancelToken.source();
 		dispatch(getProduct(productId, source));
 
 		return () => {
 			return source.cancel('Request canceled');
 		};
+		
 	}, [dispatch, productId, successProductReview]);
 
 	/* addToCart Function */

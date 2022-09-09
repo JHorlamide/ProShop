@@ -30,7 +30,8 @@ router
 
 /***
  * @router  GET | PUT | DELETE: api/users/id
- * @desc    Get user by Id | Update User By Id | (Delete user) => Admin Users Only Can Access This Endpoint
+ * @desc    Get user by Id | Update User By Id | 
+ * (Delete user) => Admin Users Only Can Access This Endpoint
  * ***/
 router
   .route('/:id')

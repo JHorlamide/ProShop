@@ -51,11 +51,10 @@ userSchema.methods.matchPassword = async function (userPassword) {
 
 /* Hash user password before saving to database */
 userSchema.pre('save', async function (next) {
-
   /* Execute if the password is sent or modified */
   if (!this.isModified('password')) {
     next();
-  }
+  };
 
   const salt = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);
@@ -71,6 +70,7 @@ export const inputValidation = (input) => {
         minDomainSegments: 2,
         tlds: { allow: ['com', 'net'] },
       }),
+  
     password: Joi.string().min(5).max(20).required(),
   });
 

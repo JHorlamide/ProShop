@@ -16,6 +16,7 @@ const ProductRating = ({ value, text, color }) => {
           }
         ></i>
       </span>
+
       <span>
         <i
           style={{ color }}
@@ -40,6 +41,7 @@ const ProductRating = ({ value, text, color }) => {
           }
         ></i>
       </span>
+      
       <span>
         <i
           style={{ color }}
@@ -52,6 +54,7 @@ const ProductRating = ({ value, text, color }) => {
           }
         ></i>
       </span>
+
       <span>
         <i
           style={{ color }}

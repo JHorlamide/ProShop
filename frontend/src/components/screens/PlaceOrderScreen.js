@@ -65,6 +65,7 @@ const PlaceOrderScreen = ({ history }) => {
   return (
     <>
       <CheckOutSteps step1 step2 step3 step4 />
+      
       <Row>
         {/* Item Details */}
         <Col md={8}>

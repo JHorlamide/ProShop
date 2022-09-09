@@ -31,6 +31,7 @@ const CartScreen = ({ match, location, history }) => {
 		return () => {
 			return source.cancel('Request canceled');
 		};
+		
 	}, [dispatch, productId, qty]);
 
 	const removeFromCartHandler = (id) => {

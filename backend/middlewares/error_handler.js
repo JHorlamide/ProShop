@@ -10,6 +10,7 @@ export const objectIdErrorHandler = (error, req, res, next) => {
   if (error.kind === 'ObjectId') {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     res.status(statusCode);
+    
     return res.json({
       message: err.message,
       stack: process.env.NODE_EN === 'production' ? null : err.stack,

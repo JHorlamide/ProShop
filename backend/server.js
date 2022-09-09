@@ -12,10 +12,10 @@ const app = express();
 dotenv.config();
 
 if (process.env.NODE_ENV === 'development') {
-	app.use(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 7000;
 
 /* Database Connection */
 connectDB();
@@ -24,8 +24,8 @@ connectDB();
 route(app);
 
 app.listen(PORT, () => {
-	console.log(
-		`Server started in ${process.env.NODE_ENV} mode on port ${PORT}...`.cyan
-			.bold
-	);
+  console.log(
+    `Server started in ${process.env.NODE_ENV} mode on port ${PORT}...`.cyan
+      .bold
+  );
 });

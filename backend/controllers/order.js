@@ -46,7 +46,7 @@ export const addOrderItem = asyncMiddleware(async (req, res) => {
 });
 
 /***
- * @router  GET: api/orders/id
+ * @router  GET: /api/orders/id
  * @desc    Get order by id
  * @access  Private
  * ***/
@@ -93,8 +93,8 @@ export const updateOrderToPaid = asyncMiddleware(async (req, res) => {
 
 /***
  * @router  PUT: api/orders/:id/delivered
- * @desc    Update order to delivered
- * @access  Private/Admin
+ * @desc    Update order to delivered.
+ * @access  Private/Admin.
  * ***/
 export const updateOrderToDelivered = asyncMiddleware(async (req, res) => {
 	const order = await Order.findById(req.params.id);

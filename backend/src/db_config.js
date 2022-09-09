@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
+// process.env.MONGO_URI
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
+    const conn = await mongoose.connect(' mongodb://localhost:27017/proshop', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
@@ -10,10 +11,10 @@ const connectDB = async () => {
     });
 
     console.log(
-      `Mongodb connected... ${conn.connection.host}`.yellow.underline.bold
+      `Mongodb connected... ${conn.connection.host}`
     );
   } catch (error) {
-    console.error(`Error: ${error.message}`.red.underline.bold);
+    console.error(`Error: ${error.message}`);
     process.exit(1);
   }
 };
