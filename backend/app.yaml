@@ -1,0 +1,9 @@
+runtime: nodejs16
+
+env_variables:
+  JWT_SECRET: "#demilaorJH21#"
+  MONGO_URI: mongodb+srv://JHorlamide:olamide123@jhorlamide.jhp03.mongodb.net/proshop?retryWrites=true&w=majority
+  DB_URL_LOCAL: mongodb://localhost:27017/proshope
+  NODE_ENV: production
+  PAYPAL_CLIENT_ID: AVu3ZghWbb4pDFGv82rQihGEmzdvMkDJPPnFFx22aYNmLudZwKvyQxwSmWil7v8T4EuFad2-kSIsGs0A
+  PORT: 9090
